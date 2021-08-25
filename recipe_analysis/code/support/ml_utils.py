@@ -451,9 +451,9 @@ def build_ingredient_graph(X, y, X_one_hot, vectorizer,
         },
                            label_col = ['ID_recipe', 'cuisine'],
                            figsize=(40,40)):
+    '''This code was taken and adapted from https://github.com/alialamiidrissi/ADA_Course_Project/blob/master/Project/graph_helper.py'''
 
     cuisines = palette.keys()
-
     # Build the graph where each node is an ingredient
     # And edges link ingredients frequently used togheter in recipes
     G = nx.Graph()
