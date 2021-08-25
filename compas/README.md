@@ -717,6 +717,8 @@ Moreover, we also give the net the information about COMPAS predicts the individ
 The model aims to optimizie accuracy and the error is the RSME.
 (Full specifications may be found in the paper.)
 
+<details>
+    <summary>Click to expand for training results!</summary>
     Do training for linear_cuts
     for cutoff 0
     ['True Pos.' 'False Pos.' 'True Neg.' 'False Neg.']
@@ -1320,7 +1322,7 @@ The model aims to optimizie accuracy and the error is the RSME.
     Number of COMPAS correct ones 699
     Total number of correct ones: 740.0
     #####################################
-
+</details>
 
 Now that we trained our/loaded our model, we can see that it manages to find a pattern within the data useful for correction.
 And, as the binning strategy is so central, its performance varies depending on the binning strategy employed.
