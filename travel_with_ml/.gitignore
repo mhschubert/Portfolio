@@ -1,4 +1,7 @@
-*.ipynb*
+*.ipynb
+.ipynb_checkpoints
 __pycache__
-__pycache__/*
-__gifparts__/*
+**/__pycache__/
+**/__pycache__/**
+**/gifparts/
+**/gifparts/**
