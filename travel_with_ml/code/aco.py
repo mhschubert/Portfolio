@@ -1,4 +1,4 @@
-#this aco includes the optimizations proposed by Zhu et al (2019):https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8709963
+#this aco includes the optimizations proposed by Zhu et al (2020)
 #published in artificial intelligence 2020 https://doi.org/10.1007/s10489-020-01841-x <- lots of changes when compared to the version on ieee
 from __future__ import annotations
 import sys
@@ -487,6 +487,7 @@ class PPACO(object):
         return tmp
 
 if __name__ == '__main__':
+    # testing
     random.seed(12345)
     cost = np.zeros(shape=(10,10))
     tril = np.tril_indices_from(cost, k=-1)

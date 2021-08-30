@@ -95,7 +95,7 @@ if __name__ == '__main__':
     #path for data
     argparser = argparse.ArgumentParser(description='Data and Save Directories, Multiprocessing')
     argparser.add_argument_group('dirinfo')
-    argparser.add_argument('--datapath', help='Relative path to dataset', default='../data')
+    argparser.add_argument('--datapath', help='Relative path to dataset', default='../data/concap.csv')
     argparser.add_argument('--savepath', help='Relative path to figure directory', default='../figures')
     argparser.add_argument('--multiprocess', help='ACO algorithm with multiprocessing to speed things up?', default='False',
                            choices=['True', 'False'])
