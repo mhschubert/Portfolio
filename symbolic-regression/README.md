@@ -1,5 +1,7 @@
 # Using Symbolic Regression & Grammatical Evolution for Estimating Functions to Describe Clusters
 
+### Uses: unsupervised learning, symbolic regression, evolutionary learning; backend: R
+
 In this project, I use symbolic regression via gramamtical evolution to find mathemtical functions.
 The goal is to find a smaller number of functions describing a larger number of clusters so that the number of meaningful clusters may be compressed to a sensbile number.
 
