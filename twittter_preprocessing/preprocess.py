@@ -71,9 +71,9 @@ def chunkify(linebytes, chunksize):
 
     return linebytes
 
-#does not work
-def check_done(linebytes, savepath, path, filename, ):
 
+def check_done(linebytes, savepath, path, filename, ):
+    #checks whether part of the job was already done before - enables sinterrupt and continue of tasks
 
     filename = os.path.join(path, filename)
     org = open(filename, 'r', encoding='utf-8')
@@ -103,6 +103,7 @@ def check_done(linebytes, savepath, path, filename, ):
     return linebytes
 
 def get_done(savepath, i):
+    #checks whether a file of ids exists for which the tasks are already done
     if os.path.exists(os.path.join(savepath, 'process', '_processed_ids_part_{}.ndjson'.format(i))):
         done_ids = {}
         for j in [i-1, i, i+1]:
@@ -117,9 +118,11 @@ def get_done(savepath, i):
     return done_ids
 
 def find_pol(text):
+    #gets text sentiment and polarity using textblob
     return TextBlob(text).sentiment
 
 def repl_special_characters(matcher):
+    #deletes sppecial characters except when they belong to a list of predefined emoijis
     smile_space_re = re.compile(r"(:\\|:-/|:/|:-\\|:\)|;\)|:-\)|;-\)|:\(|:-\(|:-o|:o|<3|\s+)")
     ##keep part after contraction (not) as separate word
     if matcher.group(0) == "'":
@@ -132,6 +135,7 @@ def repl_special_characters(matcher):
         return matcher.group(0)
 
 def make_ngrams_text(text,range_WORD = (1,2)):
+    #makes word-based ngrams
     wordgrams = {key:[] for key in range(range_WORD[0], range_WORD[1]+1)}
     for i in range(len(text)-range_WORD[0]+1):
         for key in wordgrams.keys():
@@ -141,6 +145,7 @@ def make_ngrams_text(text,range_WORD = (1,2)):
     return wordgrams
 
 def make_ngrams_char(text, range_CHAR = (2,5)):
+    #makes char-based ngrams
     chargrams = {key:[] for key in range(range_CHAR[0], range_CHAR[1]+1)}
     textlen = len(text)
     for i in range(textlen-range_CHAR[0]+1):
@@ -152,6 +157,7 @@ def make_ngrams_char(text, range_CHAR = (2,5)):
     return chargrams
 
 def parse_spacy(ids, tweetIds, texts):
+    #makes the spacy tokens (lemmas, pos, tag, dep etc.) and saves then in individual strings as tokens
     import srsly
     from spacy.symbols import ORTH
     #exchange patterns to assess contractions correctly
@@ -231,6 +237,7 @@ def parse_spacy(ids, tweetIds, texts):
     return processed
 
 def parse_text_char(text, encase, asis=False):
+    #parsing for character-based ngram tokens
     non_characters = re.compile(r"(?<!<URL|HTAG|USER|MOJI|ICON|TIME|MBER|OJI>|<END|<BEG)[^a-zA-Z0-9_\s]+(?![^a-zA-Z0-9_\s]*<EMOJI>|URL>|HASHTAG>|USER>|EMOJI>|EMOTICON>|TIME>|NUMBER>|END>|BEG>)")
     non_literal = re.compile(r"(?<!<URL|HTAG|USER|MOJI|ICON|TIME|MBER|OJI>|<END|<BEG)[<>]+(?![^a-zA-Z0-9_\s]*<EMOJI>|URL>|HASHTAG>|USER>|EMOJI>|EMOTICON>|TIME>|NUMBER>|END>|BEG>)")
 
@@ -297,8 +304,9 @@ def parse_text_char(text, encase, asis=False):
     return ['<beg>'] + words + ['<end>'],  ['<BEG>'] + chars + ['<END>']
 
 def parse_dist(t):
-    #negative look-ahead and negative lookbehind
+    # makes the text-distortion tokens
 
+    #negative look-ahead and negative lookbehind
     characters = re.compile(r"(\w|(<EMOJI>.*?<EMOJI>)|(<EMOTICON>.*?<EMOTICON>)|<URL>|<HASHTAG>|<USER>|<EMOJI>|<EMOTICON>|<TIME>|NUMBER>)")
     space_collapse_re = re.compile("[\s]+")
 
@@ -312,7 +320,7 @@ def parse_dist(t):
 def parse_raw(id, tweetId, tweet, encase =[],
           spacy=False, filehandles=None):
 
-    #makes general preprocessing steps for everything - less for the spacy part more for the char and word parts
+    #makes general preprocessing steps for single tweet - less for the spacy part more for the char and word parts
     #print('in parse raw')
     #sys.stdout.flush()
     # regex for rpeprocessing
@@ -422,8 +430,10 @@ def preprocess(IDs, tweetIDs, tweets, range_CHAR = (2,5),
                range_WORD=(1,5),range_TAG = (1,3),
                range_DEP=(1,5), range_POS = (1,5), spacy=False, both = False, asis=False, encase=['emoji', 'smile'], filehandles=None, num_to_do=0,
                times_done = None, byte=None):
+
+    #this is the preprocessing function for a list of tweets - it then goes on to process every tweet individually
     #expects a list of tweets
-    # q list with 2 queues which correpsond to (0=[CHAR, CHARasIs, DIST, WORD NUM, POL, PROCESS], 1=[LEMMA, DEP, TAG, POS, VECTORS])
+    
     #pass uples have the form (ID, processed, Type, range<optional>)
     assert type(filehandles) != type(None)
 
@@ -502,7 +512,7 @@ def process_wrapper(linebytes, path, filen, savepath, part_id, num_to_do, range_
                range_WORD=(1,5),range_TAG = (1,3),
                range_DEP=(1,5), range_POS = (1,5), spacy=False,
                     both = False, asis=False, encase=['emoji', 'smile'], done_dic=None, rerun=False):
-    # q list with 2 queues which correpsond to (0=[CHAR, CHARasIs, DIST, WORD NUM, POL, PROCESS], 1=[LEMMA, DEP, TAG, POS, VECTORS])
+    #is a wrapper for the ChildDaemon - each daemon writes to its own file - no listener as during tests the queues quickly exploded and the ParentProcess crashed
 
     pid = mp.current_process()
     print('{} has started to work'.format(pid))
@@ -556,8 +566,7 @@ def process_wrapper(linebytes, path, filen, savepath, part_id, num_to_do, range_
                     tweet_counter += 1
 
 
-            #print('I have {} tweets to process'.format(len(tweetIDs)))
-            #sys.stdout.flush()
+
             if ids:
                 preprocess(IDs=ids, tweetIDs=tweetIDs, tweets=tweets, range_CHAR=range_CHAR,
                            range_WORD=range_WORD, range_TAG=range_TAG,
@@ -681,229 +690,6 @@ def file_ceation_wrapper(ranges, savepath, pid, rerun=False):
     return filehandles
 
 
-def listener(doInt, ranges, q, savepath, rerun=False, num_to_process =0, o=None):
-        #for two listeners
-
-    toDo = {0:['PROCESS','POLARITY', "EMOTICON_C", "NUM",  'AsIS'],
-            1: ['CHAR', 'WORD', 'DIST'],
-            2:['LEMMA', 'POS'],
-            3:['TAG', 'DEP']}#'VECTORS',
-
-
-    pid = mp.current_process()
-
-    typs = toDo[doInt]
-    o = open(os.path.join(savepath, 'out_{}.txt'.format(doInt)), 'w')
-    print('got my todo', file=o)
-    sys.stdout.flush()
-    #open/create files in dictionary for each tag which listener responsible for
-    filehandles = {}
-    for el in typs:
-        print('el is {}'.format(el), file=o)
-        sys.stdout.flush()
-        if el in ["VECTORS", "NUM", "POLARITY", "EMOTICON_C"]:
-            #print('Creating single start', file=o)
-            #sys.stdout.flush()
-            typ = el.lower()
-            featurek = typ
-            ident = typ + '.ndjson'
-            #print('Creating single file handles', file=o)
-            sys.stdout.flush()
-            f, writer = make_files(savepath, typ, ident, rerun)
-            #print('Returned handles', file=o)
-            filehandles[featurek] = {}
-            #print('Created handles dic', file=o)
-            #sys.stdout.flush()
-            filehandles[featurek]['f'] = f
-            #print('Added filehandle', file=o)
-            #sys.stdout.flush()
-            filehandles[featurek]['writer'] = writer
-            #print('Created and appended single file handles', file=o)
-            #sys.stdout.flush()
-
-        elif el == 'PROCESS':
-            #print('Creating process', file=o)
-            #sys.stdout.flush()
-            typ = el.lower()
-            featurek = typ
-            ident = '_processed_ids.ndjson'
-            #print('Creating process file handles', file=o)
-            #sys.stdout.flush()
-            f, writer = make_files(savepath, typ, ident, rerun)
-            filehandles[featurek] = {}
-            filehandles[featurek]['f'] = f
-            filehandles[featurek]['writer'] = writer
-            #print('Created and appended process file handles', file=o)
-            #sys.stdout.flush()
-        else:
-            typ = el.lower()
-            for i in range(ranges[el][0], ranges[el][1]+1):
-                #print('Creating ranges', file=o)
-                #sys.stdout.flush()
-                featurek = typ + '_grams_' + str(i)
-                #print('Created featurek {}'.format(featurek), file=o)
-                #sys.stdout.flush()
-                ident = typ + '_grams_' + str(i) + '.ndjson'
-                #print('Created ident {}'.format(ident), file=o)
-                #sys.stdout.flush()
-
-                #print('trying to create file for {} {}'.format(typ, i), file=o)
-                #sys.stdout.flush()
-                f, writer = make_files(savepath, typ, ident, rerun)
-                #print('returned filehandles correctly', file=o)
-                #sys.stdout.flush()
-                filehandles[featurek] = {}
-                #print('made dic in file for key {}'.format(featurek), file=o)
-                #sys.stdout.flush()
-                filehandles[featurek]['f'] = f
-                #print('appended f', file=o)
-                #sys.stdout.flush()
-                filehandles[featurek]['writer'] = writer
-                #print('appended writer', file=o)
-                #sys.stdout.flush()
-                #print('created file for {} {}'.format(typ, i), file=o)
-                #sys.stdout.flush()
-
-
-    print('Listener {} got to work for {} and num_to_process is {} '.format(pid, typs, num_to_process), file=o)
-    sys.stdout.flush()
-
-    gotten = 0
-    proc = {}
-    id_byte = {}
-
-    while True:
-        #print('waiting for item from queue...', file=o)
-        #sys.stdout.flush()
-
-        #get from correct queue
-        m = q[doInt].get()  ##Q:
-        #print('Gotten el {} from queue'.format(type(m[0])), file=o)
-        #if we have the kill command from main we end the loop (if queue is empty)  otherwise work till empty and close the file
-        if m[0] == 'kill':
-            empty = q[doInt].empty()
-            print('Queue is empty: {}'.format(empty), file=o)
-            if empty:
-                print('is kill', file=o)
-                if doInt !=0:
-                    q[doInt-1].put(m)
-                break
-            else:
-                print('is kill alternative', file=o)
-                q[doInt].put(m)
-                print('put kill command back to queue', file=o)
-                continue
-
-                #while not q[doInt].empty():
-                #    m = q[doInt].get()
-                #    print('Gotten el {} for id {} from queue'.format(m[2], m[4]), file=o)
-                #    print(q[doInt].empty())
-
-        ##this is for write results to file
-        if m[2] != 'PROCESS':
-           # print('got item from queue ID: {}, tweetID {} type: {} ngrams: {}'.format(m[0], m[4], m[2], m[3]), file=o)
-
-            #now we have to write it tot the correct file and make correct key
-            #if last position of tuple is == '', we have a file without grams
-            if m[3] == '':
-                key = m[2].lower()
-            else:
-                key = m[2].lower() + '_grams_' + str(m[3])
-
-            #print('made key {}'.format(key), file=o)
-            res = {'ID': m[0], 'tweetID': m[4]}
-            #if result is not saved in tuple but in dic (e.g. for POL and NUM)
-            if type(m[1]) == type({}):
-                res.update(m[1])
-
-            elif type(m[1]) == type(np.array([1])):
-                res[key] = m[1].tolist()
-            else:
-                #select the result from tuple
-                res[key] = m[1]
-            #print((key in filehandles.keys()), file=o)
-            filehandles[key]["writer"].write(res)
-            #print('wrote item to file ID: {}, tweetID {}, type: {} ngrams: {}'.format(m[0], m[4], m[2], m[3])
-            #     , file=o)
-            #put the id into the processed queue
-            q[0].put((m[0], '', 'PROCESS', str(m[2]) +'_' + str(m[3]), m[4]))
-            del res, m
-
-        #here we check whether all has been processed per ID, and if so, we put the ID into the processed file, so that we know all is done here
-        #num_to_process is the number of stuff per ID we have to have processed
-        else:
-            #print('got item from queue ID: {}, twitter_ID: {}, output: {}, type: {}'.format(m[0],  m[4], m[3], m[2])
-            #      , file=o)
-            #create dic entry with byte if it is the passed byte from process_wrapper
-            if m[1] != '':
-                id_byte[m[0]] = m[1]
-            else:
-                if m[0] not in proc.keys():
-                    proc[m[0]] = {m[4]:1}
-                #else only increment our counter by 1
-                else:
-                    proc[m[0]][m[4]] = proc[m[0]].get(m[4], 0) + 1
-
-                current = proc[m[0]][m[4]]
-                print(current, num_to_process, file=o)
-                #num_to_process is number of files which is processing types
-                if current == num_to_process:
-                    #print('entering filewriting process', file=o)
-                    #write the done to file and delete entry from dic so that dic is faster to search
-                    filehandles[m[2].lower()]['writer'].write({'tweetID':m[4], 'ID': m[0], 'byte':id_byte[m[0]], 'processed': current})
-                    #print('wrote item to file ID: {} type: {} and tweetID: {}'.format(m[0], m[3], m[4])
-                    #      , file=o)
-                    tmp = proc[m[0]].pop(m[4])
-                    if not proc[m[0]]:
-                        tmp = proc.pop(m[0])
-                    del tmp, current
-                    gotten += 1
-            del m
-
-    print('gotten {} files out of queue'.format(gotten), file=o)
-
-
-    print('done or got kill command...shutting down the listener {} for results {}'.format(pid, typs), file=o)
-    for key in filehandles:
-        filehandles[key]['writer'].close()
-        filehandles[key]['f'].close()
-
-    print('done...shutdown of listener {}'.format(pid), file=o)
-    o.close()
-
-
-#unneeded
-def make_queues(manager, range_CHAR = (2,5),
-               range_WORD=(1,5),range_TAG = (1,3),
-               range_DEP=(1,5), range_POS = (1,5)):
-
-    queues = {}
-    queues['CHAR'] = range(range_CHAR[0], range_CHAR[1]+1)
-    queues['CHARasIs'] = range(range_CHAR[0], range_CHAR[1] + 1)
-    queues['DIST'] = range(range_CHAR[0], range_CHAR[1] + 1)
-    queues['WORD'] = range(range_WORD[0], range_WORD[1]+1)
-    queues['LEMMA'] = range(range_WORD[0], range_WORD[1] + 1)
-    queues['DEP'] = range(range_DEP[0], range_DEP[1]+1)
-    queues['TAG'] = range(range_TAG[0], range_TAG[1]+1)
-    queues['POS'] = range(range_POS[0], range_POS[1]+1)
-    queues['VECTORS'] = range(1)
-    queues['NUM'] = range(1)
-    queues['POL'] = range(1)
-    queues['EMOTICONS'] =range(1)
-    queues['PROCESS'] = range(1)
-
-
-    #make a list of queues for every
-    enum = 0
-    for key in queues.keys():
-        tmp = []
-        for _ in queues[key]:
-            tmp.append(manager.Queue())
-            enum += 1
-        queues[key] = tmp
-    queues['enum'] = enum
-    return queues
-
 def cal_num_comb(listener_dic, spacy, asis, both):
 
     c = 0
@@ -928,9 +714,6 @@ def cal_num_comb(listener_dic, spacy, asis, both):
 
     return c
 
-
-
-
 def _main(args):
     #get emoji codes
     if type(None) == type(demoji.last_downloaded_timestamp()):
@@ -943,7 +726,7 @@ def _main(args):
     range_DEP = args['dep']
     range_POS = args['pos']
 
-    #dic is needed for listener
+    #dic is needed for job amount calculation
     listener_dic = {'CHAR': range_CHAR,
                     'AsIS': range_CHAR,
                     'TAG': range_TAG,
@@ -962,7 +745,6 @@ def _main(args):
 
     #must use Manager queue here, or will not work
     manager = mp.Manager()
-    #create a two queues to split work into two parts
     if not args['test']:
         ncpus = mp.cpu_count()-1
         if ncpus < 80-1:
