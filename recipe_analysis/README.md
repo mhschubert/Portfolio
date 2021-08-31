@@ -1,5 +1,7 @@
 # Recipe Analysis on Reduced Yummly
 
+### Uses: Natural Language Processing (NLP), PCA, machine learning; Backends: Spacy, Scikit-learn, Tensorflow in Python
+
 - Contains an **explorative and graphical data analysis**. Focuses on **number of recipes, ingredients by cuisine, complexity, etc.**.<br> <br>
 - Assessment of data quality **Datenqualität** and potential **problemse** and their **solutions** <br> <br> 
 - Assesses **similarity** of recipes **on the basis of their ingredients** (e.g. **desserts**, **mains** etc.) <br> <br>  
