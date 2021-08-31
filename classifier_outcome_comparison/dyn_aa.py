@@ -1,7 +1,16 @@
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, HashingVectorizer, TfidfVectorizer
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, OneHotEncoder
-from sklearn.linear_model import SGDClassifier, Perceptron
-from sklearn.svm import LinearSVC
+#Author: Marcel H. Schubert
+'''Script is for large-scale comparison of performance on different featuretypes and their combinations.
+It implements two models, a single appraoch using a SVM and the stacked approach suggested in Custodio et al. (2021):
+https://www.sciencedirect.com/science/article/abs/pii/S0957417421003079
+The target is either gender or age of authors and thus we are in the field of atuhroship analysis/profiling.
+
+Caution: When I say large-scale I mean it: This script trains 4800 models and comapres them in accuracy, f1-score and
+on internal similarity when the featuretype stays the same but the target-set changes slightly in the number of authors.'''
+
+
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, HashingVectorizer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.linear_model import SGDClassifier
 from sklearn.metrics import accuracy_score, f1_score
 import pandas as pd
 import demoji
@@ -26,7 +35,8 @@ import jsonlines
 from utils import ml_utils, generator, evaluations
 
 def compose_model(lower_weights:list , upper_weights:np.ndarray):
-    #build the model with the trained weights so that we can do relevance-propagation
+    # helper function to reconstruct a trained model from a weight matrix
+    # build the model with the trained weights so that we can do relevance-propagation
     inputshape = 0
     conc_out = 0
     models = []
@@ -62,7 +72,7 @@ def compose_model(lower_weights:list , upper_weights:np.ndarray):
     return model
 
 def make_logistic(output_shape, functional=False, input_shape=None, compile=True):
-
+    # function to create a logistic classifier using tensorflow
     if output_shape==1:
         activation = 'sigmoid'
         loss = 'binary_crossentropy'
@@ -70,10 +80,9 @@ def make_logistic(output_shape, functional=False, input_shape=None, compile=True
         activation = 'softmax'
         loss = 'categorical_crossentropy'
     opt = tf.keras.optimizers.Adadelta(learning_rate=1.0, rho=0.5)
-    #opt = tf.keras.optimizers.Adagrad(learning_rate=0.1)
-    #opt = tf.keras.optimizers.SGD(learning_rate=0.01, momentum=0.01)
+
     regularizer = tf.keras.regularizers.l2(l2 = 0.01)
-    #regularizer = tf.keras.regularizers.l1()
+
     if not functional:
         model = tf.keras.models.Sequential()
         #use delayed building - no input shape specified till we actually build the model (i.e. when we have the data)
@@ -97,6 +106,8 @@ def make_logistic(output_shape, functional=False, input_shape=None, compile=True
 
 def make_emoji_vector(featuretyp: str, minTw_gram_auth: list, path: str, id_type: str, subset='train', id_subset=[],
                       vectorizer=None, load_sparse=True):
+    # make token feature-matrix for emojis and emoticons
+
     # get dic for emoji names
     set_ids = {}
     set_ids[featuretyp + ''] = []
@@ -243,7 +254,7 @@ def make_emoji_vector(featuretyp: str, minTw_gram_auth: list, path: str, id_type
 def make_tfidf(featuretyp:str, minTw_gram_auth:list, path:str, id_type:str, subset ='train', hash =True, id_subset=[],
                vectorizers = None, trans_in=None,
                load_sparse=True, base=False):
-
+    # make tfidif-feature matrix for everything (e.g., char-based ngrams, word-based ngrams, emojicons) except numerical features
     minTW = minTw_gram_auth[0]
     numAuthors = minTw_gram_auth[2]
     gram_files = {}
@@ -404,13 +415,6 @@ def make_tfidf(featuretyp:str, minTw_gram_auth:list, path:str, id_type:str, subs
                 vectorizer_dic[str(gram)]['vect'] = vectorizer
                 vectorizer_dic[str(gram)]['vocab'] = vocab
 
-                # make sure max_key is set
-                # if max_key == 0:
-                #    for key in vocab.keys():
-                #        if key > max_key:
-                #            max_key = key
-
-
 
             elif hash and true_train:
                 # update our csr matrix and set all words to zero with a doc-frequency below 1%
@@ -469,17 +473,14 @@ def make_tfidf(featuretyp:str, minTw_gram_auth:list, path:str, id_type:str, subs
             else:
                 sys.exit('Error - wrong file to make tfidf from...')
             lines = [1]
-            #id_tester= set()
+
             set_ids[featuretyp + str(gram)] = []
             while lines:
                 lines = ml_utils.batch_read(filelines, batchsize=1000, to_json=True)
                 if not lines:
                     break
                 lines = pd.DataFrame.from_dict(lines, orient='columns')
-                #lines, id_tester = ml_utils.duplicate_uid_tester(lines, id_tester)
-                #if lines.shape[0] == 0:
-                #    # no ids in current lines
-                #    continue
+
                 if id_subset:
                     lines = ml_utils.select_uids(lines, id_subset)
                     if lines.shape[0] == 0:
@@ -614,6 +615,7 @@ def make_tfidf(featuretyp:str, minTw_gram_auth:list, path:str, id_type:str, subs
     return trans, vectorizer_dic, tfidf, set_ids
 
 def make_scaler(featuretyp:str, minTw_gram_auth:list, path:str, id_type:str, subset ='train', id_subset=[], scaler =None, load_scaled=True):
+    # function to scale numerical features between 0 and 1
     set_ids = {}
     set_ids[featuretyp+''] = []
 
@@ -715,6 +717,7 @@ def make_scaler(featuretyp:str, minTw_gram_auth:list, path:str, id_type:str, sub
     return scaler, dat, set_ids
 
 def process_input(featuretyp:str, target:str, minTw_gram_auth, path:str, subset='train', id_subset=[], components=None, hash=False, skip_pca=True, base=False):
+    # processes the different kinds of feature inputs (character-based, word-based, pos-tag based etc.) and applies the respective transformation-routines
     #find the number of features for pca which explains 99% variance - this takes a while
     id_type = target + '_ids'
 
@@ -757,6 +760,7 @@ def process_input(featuretyp:str, target:str, minTw_gram_auth, path:str, subset=
     return components, dat, ids
 
 def encode_y(y, target, model_dir, filename, id_subset, subset='train'):
+    # function to encode the y-values/target
     if subset == 'crossval':
         subset = 'train'
         true_train = False
@@ -781,6 +785,10 @@ def encode_y(y, target, model_dir, filename, id_subset, subset='train'):
 
 def prepare_data(X_train, y_train, trainids, encoder_name, model_dir, target,
                  X_test=None, y_test=None, testids=None, subset='train'):
+
+    '''assesses the order of the different datasets, i.e. feature-input and
+    target set as they may be constructed at different points in time or with interruptions'''
+
     y_train_ids = y_train.uID.to_numpy().flatten()
     y_test_ids = y_test.uID.to_numpy().flatten()
 
@@ -799,6 +807,9 @@ def prepare_data(X_train, y_train, trainids, encoder_name, model_dir, target,
 
 def _direct_predict(X_train:scipy.sparse.csr.csr_matrix, trainids:list, X_test:scipy.sparse.csr.csr_matrix,
                     testids:list,y_train:pd.DataFrame, y_test:pd.DataFrame,info:list, path:str, rewrite=False, q=None):
+
+    # function for direct prediction of target using multiple feature types as input (i.e. combination of character-based, word-based etc. features)
+
     #info=[target, tweetLen, numAuth, '_'.join(featuretypes), subgrams]
     path = os.path.join(*ml_utils.split_path_unix_win(path))
     ml_utils.make_save_dirs(path)
@@ -879,7 +890,11 @@ def _direct_predict(X_train:scipy.sparse.csr.csr_matrix, trainids:list, X_test:s
 
 def _dynAA(X_train:np.ndarray, trainids:list, X_test:np.ndarray, testids:list,
            y_train:pd.DataFrame, y_test:pd.DataFrame,info:list, path:str, weights:list, rewrite = True, q=None):
-    #info=[target, tweetLen, numAuth, '_'.join(featuretypes), subgrams]
+
+    '''implements a version of the dynAA model by Custodio et al. 2021,
+    i.e. stacked classifier with first-layer classifiers using only one type
+    of feature and second layer predicting based on the first'''
+
     path = os.path.join(*ml_utils.split_path_unix_win(path))
     ml_utils.make_save_dirs(path)
     model_dir = os.path.join(path, 'dynAA', str(info[1]), info[0])
@@ -966,6 +981,7 @@ def _dynAA(X_train:np.ndarray, trainids:list, X_test:np.ndarray, testids:list,
     return weight_dic
 
 def load_train(featuretyp, target, minTw_gram_auth:list, path:str, y:pd.DataFrame, hash:bool, subset ='train', true_train=True):
+    # simply load if already trained
     components = None
     if true_train:
         print('we are truly fitting and predicting now...')
@@ -1021,6 +1037,7 @@ def load_train(featuretyp, target, minTw_gram_auth:list, path:str, y:pd.DataFram
 
 def train_loop(path: str, in_dic:dict, targets:str, dynAA = True, partial =False, singular=False, hash=False,
                true_train=True, baseline_fetch=True, all_grams=True, q=None):
+    #loop for training of a model on each of the different subsets of feature types - multiprocessing so each ChildDaemon trains by themselves
     pid = mp.current_process().pid
     #function iterates over files and makes all classifiers etc as predictions and saves them to file
     mode = 'a'
@@ -1335,7 +1352,7 @@ def train_loop(path: str, in_dic:dict, targets:str, dynAA = True, partial =False
                 gc.collect()
 
 def train_comp(featuretyp:str, target:str, minTw_gram_auth, path:str, y:pd.DataFrame, id_subset:list=None, hash=False):
-
+    # training of mdoels and saving of result to disk
     path = os.path.join(*ml_utils.split_path_unix_win(path))
     model_dir = os.path.join(path, featuretyp, str(minTw_gram_auth[0]), target)
     model_dir = ml_utils.make_save_dirs(model_dir)
@@ -1431,6 +1448,8 @@ def train_comp(featuretyp:str, target:str, minTw_gram_auth, path:str, y:pd.DataF
 
 def evaluate_comp(featuretyp:str, target:str, minTw_gram_auth, subset:str, path:str, y, id_subset:list=None,
                   components=None, load_components = False, hash=False, q=None):
+
+    # evaluation on va- and train and saving of results to disk
     path = ml_utils.split_path_unix_win(path)
     path = os.path.join(*path)
     model_dir = ml_utils.make_save_dirs(os.path.join(path, featuretyp, str(minTw_gram_auth[0]), target))
@@ -1560,6 +1579,7 @@ def evaluate_comp(featuretyp:str, target:str, minTw_gram_auth, subset:str, path:
     return datainfo
 
 def process_wrapper(featuretyp:str, target:str, minTw_gram_auth, path:str, q=None, id_subset=[], hash=False):
+    # wrapper function for training process so that multiprocessing becomes possible
     import tensorflow as tf
     pp = ml_utils.split_path_unix_win(path)
     id_type = ['gender_ids', 'age_ids']
@@ -1608,6 +1628,8 @@ def process_wrapper(featuretyp:str, target:str, minTw_gram_auth, path:str, q=Non
     sys.stdout.flush()
 
 def process_wrapper_dynAA(path:str, subdic:dict, dynAA:bool, target:str, true_train:bool, q=None, singular=False):
+    # wrapper function for dynAA training process so that multiprocessing becomes possible
+
     pp = os.path.join(*ml_utils.split_path_unix_win(path))
 
     pid = mp.current_process().pid
@@ -1662,8 +1684,9 @@ if __name__ == '__main__':
         q = manager.Queue()
         jobs = []
         result_dirs = {}
-
+        # different options what this script is able to do
         if str(sys.argv[2]) == 'precalc':
+            #here we precalculate the feature enigneering so that theys may be laoded during training (saves lots of time later)
             task = process_wrapper
             if len(sys.argv) >3:
                 featuretyp_dic = {key:featuretyp_dic[key] for key in sys.argv[3:]}
@@ -1683,6 +1706,7 @@ if __name__ == '__main__':
             random.shuffle(jobs)
 
         elif str(sys.argv[2]) == 'dynAA_large':
+            # makes a full dynAA calcualtion on all possible combinations using all feature types at once
             targets_all = np.array([sys.argv[3].split('_')]).flatten().tolist()
             for target in targets_all:
                 result_dirs[str(target)] = ml_utils.make_result_dirs(os.path.join(path), str(target))
@@ -1717,6 +1741,8 @@ if __name__ == '__main__':
                                 jobs.append(job)
 
         elif str(sys.argv[2]) == 'dynAA':
+            '''makes a partial dynAA calculation using only a subset of the tasks and features
+            (basically task partitioning on a manual level and if not all results are needed)'''
             targets_all = np.array([sys.argv[3].split('_')]).flatten().tolist()
             minTweets = [int(el) for el in sys.argv[4:]]
             task = process_wrapper_dynAA
@@ -1740,6 +1766,7 @@ if __name__ == '__main__':
 
 
         elif str(sys.argv[2]) == 'dynAA_red':
+            # does dynAA only on the feature types distortion, word, character, asis and lemma (most informative ones)
             targets_all = np.array([sys.argv[3].split('_')]).flatten().tolist()
             minTweets = [int(el) for el in sys.argv[4:]]
             task = process_wrapper_dynAA
@@ -1769,6 +1796,7 @@ if __name__ == '__main__':
             featuretyp_dic = sub_dic
 
         elif str(sys.argv[2]) == 'dynAA_singular':
+            # dynAA only for a singular feature type
             targets_all = np.array([sys.argv[3].split('_')]).flatten().tolist()
             minTweets = [int(el) for el in sys.argv[4:]]
             task = process_wrapper_dynAA
@@ -1791,7 +1819,7 @@ if __name__ == '__main__':
                             print(sub_dic)
             featuretyp_dic = {'s':1, 'i':2, 'n':3, 'g':4,'u':5, 'l':6, 'a':7, 'r':8}
 
-
+        # here we start our multiprocessing after having constructed the task array above
         procs = []
 
         for job in jobs:
@@ -1840,6 +1868,7 @@ if __name__ == '__main__':
 
 
     else:
+        #testing pruposes
         minTw_gram_auth = [500, [1,2], 100]
         pp = ml_utils.split_path_unix_win(path)
         id_type = ['gender_ids', 'age_ids']
