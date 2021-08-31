@@ -1,5 +1,5 @@
 # Preprocessing & Tokenization Routine for Twitter Data
-### Uses: natural language processing (NLP); Backends: Spacy, Multiprocessing
+### Uses: natural language processing (NLP); Backends: Spacy, Multiprocessing, Python
 
 Implements a preprocessing routine for Twitter text data. The routine is designed for authorship analysis, thus it produces different types of n-gram tokens such as distortion, charcater-based, word-based, lemma-based or functional-based tokens.
 
