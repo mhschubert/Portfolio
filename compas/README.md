@@ -1,8 +1,9 @@
 # Code is Law - COMPAS Case Study Impact of design decisions on outcome
-This project looks at the impact of algorithmic design on outcome. The case study is the COMPAS dataset.
-COMPAS is a close-source algorithm used by law enforcment to assess the risk of recidivism. That assessment is then used by judges when deciding on jail and imprisonment.
 
 ### Uses: machine learning, statistical analysis; Backends: pyTorch, scikit-learn
+
+This project looks at the impact of algorithmic design on outcome. The case study is the COMPAS dataset.
+COMPAS is a close-source algorithm used by law enforcment to assess the risk of recidivism. That assessment is then used by judges when deciding on jail and imprisonment.
 
 <br><br>
 This work is on the data science side. It shows that:
