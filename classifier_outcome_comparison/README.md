@@ -1,5 +1,5 @@
 # Large-Scale Impact Comparison of Small Changes in the Data on the Outcome and Internals of a Linear ML Classifier
-### Uses natural language processing, machine learning, multiprocessing; framworks: scikit-learn, tensorflow
+### Uses: Natural Language Processing (NLP), machine learning, multiprocessing; Framworks: scikit-learn, tensorflow
 
 In this analysis, I systemtically asses the impact of small changes in the training data on the prediction performance as well as the internal weights assigned to individual features.
 
