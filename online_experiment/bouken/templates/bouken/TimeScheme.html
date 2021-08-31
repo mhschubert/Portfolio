@@ -1,0 +1,1189 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+
+
+{% block title %}
+Studienteil: Wähle die Zeit
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default" id="panel1">
+        <div class="panel-heading">
+             <h4 class="panel-title">
+        <a data-toggle="collapse" data-target="#collapseOne" class="btn-block" href="#collapseOne">
+            Erläuterungen
+        </a>
+      </h4>
+
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+{% if role == "future" %}
+                <p>In diesem Teil der Studie werden Sie eine Auszahlungsreihe aus den 10 angebotenen Auszahlungsreihen auswählen.</p>
+                <p>Diese Auszahlungsreihen werden unabhängig von potenziellen Auszahlungen in anderen Teilen der Studie sein.</p>
+                <p>Die Auszahlungen für jede Reihe werden jeweils über eine Dauer von 6 Wochen stattfinden, aber werden zu unterschiedlichen Zeitpunkten beginnen.</p>
+                <p>Wir werden zu den in der Auszahlungsreihe dargestellten Terminen jeweils eine Banküberweisung an Sie in Auftrag geben.</p>
+                <p></p>
+                <p><b>Kurze Übersicht:</b></p>
+                <div id="shortview">
+                    <p>Auszahlungsreihe 1 wird in der kommenden Woche beginnen und Sie werden 27.95 Euro pro Woche erhalten.</p>
+                    <p>Auszahlungsreihe 2 wird in zwei Wochen beginnen und Sie werden 28.64 Euro pro Woche erhalten.</p>
+                    <p>Auszahlungsreihe 3 wird in drei Wochen beginnen und Sie werden 29.26 Euro pro Woche erhalten.</p>
+                    <p>Auszahlungsreihe 4 wird in vier Wochen beginnen und Sie werden 29.80 Euro pro Woche erhalten.</p>
+                    <p>Auszahlungsreihe 5 wird in fünf Wochen beginnen und Sie werden 30.26 Euro pro Woche erhalten.</p>
+                    <p>Auszahlungsreihe 6 wird in sechs Wochen beginnen und Sie werden 30.64 Euro pro Woche erhalten.</p>
+                    <p>Auszahlungsreihe 7 wird in sieben Wochen beginnen und Sie werden 30.95 Euro pro Woche erhalten.</p>
+                    <p>Auszahlungsreihe 8 wird in acht Wochen beginnen und Sie werden 31.18 Euro pro Woche erhalten.</p>
+                    <p>Auszahlungsreihe 9 wird in neun Wochen beginnen und Sie werden 31.33 Euro pro Woche erhalten.</p>
+                    <p>Auszahlungsreihe 10 wird in zehn Wochen beginnen und Sie werden 31.40 Euro pro Woche erhalten.</p>
+                </div>
+                <p>Klicks auf die Buttons zeigen die Auszahlungsreihen im Detail an.</p>
+{% elif role == "present" %}
+     <p>In diesem Teil der Studie wählen Sie eine Auszahlungsreihe aus den 10 angebotenen Auszahlungsreihen aus.</p>
+                <p>Diese Auszahlungsreihen sind unabhängig von potenziellen Auszahlungen in anderen Teilen der Studie.</p>
+                <p>Die Auszahlungen für jede Reihe finden jeweils über eine Dauer von 6 Wochen statt, aber beginnen zu unterschiedlichen Zeitpunkten.</p>
+                <p>Wir geben zu den in der Auszahlungsreihe dargestellten Terminen jeweils eine Banküberweisung an Sie in Auftrag.</p>
+                <p></p>
+                <p><b>Kurze Übersicht:</b></p>
+                <div id="shortview">
+                    <p>Auszahlungsreihe 1 beginnt in der kommenden Woche und Sie erhalten 27.95 Euro pro Woche.</p>
+                    <p>Auszahlungsreihe 2 beginnt in zwei Wochen und Sie erhalten Euro 28.64 pro Woche.</p>
+                    <p>Auszahlungsreihe 3 beginnt in drei Wochen und Sie erhalten Euro 29.26 pro Woche.</p>
+                    <p>Auszahlungsreihe 4 beginnt in vier Wochen und Sie erhalten Euro 29.80 pro Woche.</p>
+                    <p>Auszahlungsreihe 5 beginnt in fünf Wochen und Sie erhalten Euro 30.26 pro Woche.</p>
+                    <p>Auszahlungsreihe 6 beginnt in sechs Wochen und Sie erhalten Euro 30.64 pro Woche.</p>
+                    <p>Auszahlungsreihe 7 beginnt in sieben Wochen und Sie erhalten Euro 30.95 pro Woche.</p>
+                    <p>Auszahlungsreihe 8 beginnt in acht Wochen und Sie erhalten Euro 31.18 pro Woche.</p>
+                    <p>Auszahlungsreihe 9 beginnt in neun Wochen und Sie erhalten Euro 31.33 pro Woche.</p>
+                    <p>Auszahlungsreihe 10 beginnt in zehn Wochen und Sie erhalten Euro 31.40 pro Woche.</p>
+                </div>
+                <p><b>Hinweis: </b> Klicks auf die Buttons zeigen die Auszahlungsreihen im Detail an.</p>
+{% endif %}
+ 
+        </div>
+    </div>
+</div>
+</div>
+<p></p>
+
+
+<div class="row" style="display:block;margin-top:10px;">
+    <div class="col-sm-12">
+<p>Ausgewählte Auszahlungsreihe: <a id="ticked"><b>Keine Auszahlungsreihe gewählt</b></a></p>
+<div hidden id="transferdates">
+{% if role == "future" %}
+            <p class="payrow">Am <span id="payday1"></span> werden wir Ihnen <span class="eurVal"></span> Euro überweisen.</p>
+            <p class="payrow">Am <span id="payday2"></span> werden wir Ihnen <span class="eurVal"></span> Euro überweisen.</p>
+            <p class="payrow">Am <span id="payday3"></span> werden wir Ihnen <span class="eurVal"></span> Euro überweisen.</p>
+            <p class="payrow">Am <span id="payday4"></span> werden wir Ihnen <span class="eurVal"></span> Euro überweisen.</p>
+            <p class="payrow">Am <span id="payday5"></span> werden wir Ihnen <span class="eurVal"></span> Euro überweisen.</p>
+            <p class="payrow">Am <span id="payday6"></span> werden wir Ihnen <span class="eurVal"></span> Euro überweisen.</p>
+{% else %}
+            <p class="payrow">Am <span id="payday1"></span> überweisen wir Ihnen <span class="eurVal"></span> Euro.</p>
+            <p class="payrow">Am <span id="payday2"></span> überweisen wir Ihnen <span class="eurVal"></span> Euro.</p>
+            <p class="payrow">Am <span id="payday3"></span> überweisen wir Ihnen <span class="eurVal"></span> Euro.</p>
+            <p class="payrow">Am <span id="payday4"></span> überweisen wir Ihnen <span class="eurVal"></span> Euro.</p>
+            <p class="payrow">Am <span id="payday5"></span> überweisen wir Ihnen <span class="eurVal"></span> Euro.</p>
+            <p class="payrow">Am <span id="payday6"></span> überweisen wir Ihnen <span class="eurVal"></span> Euro.</p>
+{% endif %}
+    </div>
+    </div>
+
+
+
+    <div class="col-sm-12">
+   <div class="positioning"><table id="buttongrid"></table></div>
+ <!--  <p><div class="positioning"><table id="id_calender"></table></div></p> -->
+    </div>
+</div>
+
+
+
+<input type="hidden" name="payoffScheme" id="id_payoffScheme">
+<input type="hidden" name="paymentDates" id="id_paymentDates">
+
+{% include "bouken/timemodal.html" %}
+{{ form.payoffScheme.errors }}
+{% endblock %}
+
+{% block styles %}
+
+<style type="text/css">
+
+ .payrow{
+     font-weight: bold;
+     text-align: left;
+     max-width: 500px;
+     margin: 0 auto;
+     margin-bottom: 5px;
+     }
+
+ #shortview{
+max-width:80%;
+margin: 0 auto;
+margin-top: 10px;
+margin-bottom: 10px;
+ }
+
+.values {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+}
+
+.tablehead {
+  font-style: italic;
+  font-family: serif;
+  font-weight: bold;
+}
+/*This is in order to make the info-table and the buttonsfield inline*/
+.positioning {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.spalte2 {
+  width: 60px;
+  text-align: right;
+}
+
+.valuecell {
+  border: 1px solid #dddddd;
+  padding: 8px;
+}
+
+.spalte1 {
+  text-align: left;
+}
+
+.gesamt {
+  font-weight: bold;
+}
+
+.trvalue:nth-child(odd) {
+  background-color: #dddddd;
+}
+
+.grid {
+  margin: 1em auto;
+  border-collapse: collapse;
+  width: 45%;
+}
+
+.grid td {
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  border: collapse;
+  text-align: center;
+  pic-align: center;
+  font-family: sans-serif;
+  font-size: 13px
+}
+
+.grid td.clicked {
+  font-weight: bold;
+  color: red;
+}
+
+.grid td.values {}
+
+.button1small {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 60px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button1small span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button1small span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button1small:focus {
+  outline: 0 !important;
+}
+
+.button1small:hover span {
+  padding-right: 15px;
+}
+
+.button1small:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+.button1 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button1 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button1 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button1:focus {
+  outline: 0 !important;
+}
+
+.button1:hover span {
+  padding-right: 25px;
+}
+
+.button1:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+.panel-body{
+    font-size: 12pt;
+    }
+
+
+/*.button2 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button2 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button2 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button2:focus {
+  outline: 0 !important;
+}
+
+.button2:hover span {
+  padding-right: 25px;
+}
+
+.button2:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button3 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button3 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button3 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button3:focus {
+  outline: 0 !important;
+}
+
+.button3:hover span {
+  padding-right: 25px;
+}
+
+.button3:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button4 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button4 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button4 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button4:focus {
+  outline: 0 !important;
+}
+
+.button4:hover span {
+  padding-right: 25px;
+}
+
+.button4:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button5 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button5 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button5 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button5:focus {
+  outline: 0 !important;
+}
+
+.button5:hover span {
+  padding-right: 25px;
+}
+
+.button5:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button6 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button6 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button6 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button6:focus {
+  outline: 0 !important;
+}
+
+.button6:hover span {
+  padding-right: 25px;
+}
+
+.button6:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button7 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button7 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button7 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button7:focus {
+  outline: 0 !important;
+}
+
+.button7:hover span {
+  padding-right: 25px;
+}
+
+.button7:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button8 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button8 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button8 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button8:focus {
+  outline: 0 !important;
+}
+
+.button8:hover span {
+  padding-right: 25px;
+}
+
+.button8:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button9 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button9 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button9 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button9:focus {
+  outline: 0 !important;
+}
+
+.button9:hover span {
+  padding-right: 25px;
+}
+
+.button9:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button10 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button10 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button10 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button10:focus {
+  outline: 0 !important;
+}
+
+.button10:hover span {
+  padding-right: 25px;
+}
+
+.button10:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button11 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button11 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button11 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button11:focus {
+  outline: 0 !important;
+}
+
+.button11:hover span {
+  padding-right: 25px;
+}
+
+.button11:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button12 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #8093b7;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.button12 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button12 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button12:focus {
+  outline: 0 !important;
+}
+
+.button12:hover span {
+  padding-right: 25px;
+}
+
+.button12:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.calender {
+  margin: 1em auto;
+  border-collapse: collapse;
+  position: relative;
+  right: 0px;
+}
+
+.calender td {
+  cursor: pointer;
+  width: 20px;
+  height: 30px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-family: sans-serif;
+  font-size: 13px
+  left: 10px;
+}
+
+.calender td.Januar0 {
+  background-color: #00008B;
+  color: white;
+  font-weight: bold;
+}
+
+.calender td.Februar0 {
+  background-color: gainsboro;
+  font-weight: bold;
+}
+
+.calender td.März0 {
+  background-color: #00008B;
+  color: white;
+  font-weight: bold;
+}
+
+.calender td.April0 {
+  background-color: gainsboro;
+  font-weight: bold;
+}
+
+.calender td.Mai0 {
+  background-color: #00008B;
+  color: white;
+  font-weight: bold;
+}
+
+.calender td.Juni0 {
+  background-color: gainsboro;
+  font-weight: bold;
+}
+
+.calender td.Juli0 {
+  background-color: #00008B;
+  color: white;
+  font-weight: bold;
+}
+
+.calender td.August0 {
+  background-color: gainsboro;
+  font-weight: bold;
+}
+
+.calender td.September0 {
+  background-color: #00008B;
+  color: white;
+  font-weight: bold;
+}
+
+.calender td.Oktober0 {
+  background-color: gainsboro;
+  font-weight: bold;
+}
+
+.calender td.November0 {
+  background-color: #00008B;
+  color: white;
+  font-weight: bold;
+}
+
+.calender td.Dezember0 {
+  background-color: gainsboro;
+  font-weight: bold;
+
+
+}*/
+.panel-heading a:after {
+    font-family:'Glyphicons Halflings';
+    content:"\e114";
+    float: right;
+    color:"\e080";
+}
+.panel-heading a.collapsed:after {
+    content:"\e080";
+}
+#accordion{
+    margin-bottom:20px;
+}
+.page-header {
+    background: url("{% static "iban/uni_bonn.svg" %}");
+    background-size: 170px 60px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+.modal-header {
+	font-weight:bold;
+}
+.modal-content {
+	background-color: #839ccc;
+	color: #fff;
+	text-align:center;
+}
+.modal-body{
+	background-color: #fff;
+	color: #000;
+}
+.modal-footer{
+	text-align:center;
+}
+  </style>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+$( document ).ready(function() {
+        setTimeout(function(){
+        },15000);
+});
+
+function modalOpen(){
+    var sScheme = $('#ticked').text();
+     if (sScheme){
+        $("#SendChoices").modal('toggle');
+         }
+}
+
+
+
+
+
+//Function for rearranging the page in case of window resizing
+var rw = 0;
+var col = 0;
+var w = window.innerWidth;
+var h = window.innerHeight;
+if (w < 680) {
+    rw = 5;
+    col = 2;
+}
+else{
+    rw = 2;
+    col = 5;
+}
+
+
+function watch(){
+  w = window.innerWidth;
+  h = window.innerHeight;
+  if (w < 680) {
+    rw = 5;
+    col = 2;
+    i = 0;
+    document.getElementById('buttongrid').innerHTML="";
+    //variable saving the calender grid
+    var grid = clickableGrid(rw, col, function(el, row, col, i) {
+
+      if (el.className == 'clicked') {
+        //unTick();
+        unDisplayScheme();
+        el.className = 'notClicked';
+
+      }
+      else {
+        var arr = document.getElementsByClassName('clicked');
+        if (arr.length >= 1) {
+          for (var i = 0; i < arr.length; i++) {
+            arr[i].className = 'notClicked';
+          }
+        }
+        el.className = 'clicked';
+        //tick();
+        displayScheme(el);
+        //selectPayoffScheme();
+      }
+    });
+    $('button1').attr('class', 'button1small');
+  }
+  else if(w>680){
+    rw = 2;
+    col = 5;
+    i = 0;
+    document.getElementById('buttongrid').innerHTML="";
+    //variable saving the calender grid
+    var grid = clickableGrid(rw, col, function(el, row, col, i) {
+
+      if (el.className == 'clicked') {
+        //unTick();
+        unDisplayScheme();
+        el.className = 'notClicked';
+
+      } 
+      else {
+        var arr = document.getElementsByClassName('clicked');
+        if (arr.length >= 1) {
+          for (var i = 0; i < arr.length; i++) {
+            arr[i].className = 'notClicked';
+          }
+        }
+        el.className = 'clicked';
+        //tick();
+        displayScheme(el);
+        //selectPayoffScheme();
+      }
+    });
+    $('button1small').attr('class', 'button1');
+  }
+  //Problem: Transfer clicked Button into new grid
+  //document.getElementById('button'+document.getElementById("id_payoffScheme").value).className = 'clicked';
+
+}
+window.addEventListener("resize", watch);
+
+
+//Variable for time-scheme saving
+var selectedScheme;
+//Schemes in Arrayform
+/*var scheme = [
+  [100, 0],
+  [50, 5],
+  [47, 7],
+  [44, 9],
+  [41, 11],
+  [38, 13],
+  [35, 15],
+  [32, 17],
+  [29, 19],
+  [26, 21],
+  [23, 23],
+  [20, 25],
+  [17, 27],
+  [14, 29],
+  [11, 31]
+];*/
+
+//Schemes for new Design
+
+var scheme = [[27.95,1],[28.64,2],[29.26,3],[29.80,4],[30.26,5],[30.64,6],[30.95,7],[31.18,8],[31.33,9],[31.40,10]];
+
+function unDisplayScheme(){
+	{% if role == "future" %}
+	document.getElementById('modaltext').innerHTML = 'Dafür werden wir Ihnen im Zeitraum vom <span id="mpayday1"></span> bis zum <span id="mpayday6"></span> wöchentlich <span class="eurVal"></span> Euro überweisen.';
+
+	{% else %}
+	document.getElementById('modaltext').innerHTML = 'Dafür überweisen wir Ihnen im Zeitraum vom <span id="mpayday1"></span> bis zum <span id="mpayday6"></span> wöchentlich <span class="eurVal"></span> Euro.';
+	{% endif %}
+	var eurarr = document.getElementsByClassName('eurVal');
+	    //if (eurarr.length >= 1) {
+	      for (var i = 0; i < eurarr.length; i++) {
+	        eurarr[i].innerHTML = '';
+	    	}
+	    //}
+	for (var j = 1; j<=6; j++) {
+	        document.getElementById('payday'+j).innerHTML = '';
+	        document.getElementById('mpayday'+j).innerHTML = '';
+	    }
+	document.getElementById('ticked').innerHTML ='Kein Schema gewählt' ;
+	document.getElementById('transferdates').style.display="none";	
+  document.getElementById("modalButton").style.display = 'none';
+	$('#id_paymentDates').val();
+	     // assign scheme to hidden input
+	document.getElementById('id_payoffScheme').value='';
+	document.getElementById('ticked2').innerHTML='';
+	document.getElementById('modaltext').innerHTML='Sie haben kein Auszahlungsschema ausgewählt.<br>Bitte wählen Sie ein Schema aus!';
+}
+
+function displayScheme(el){
+	unDisplayScheme();
+	{% if role == "future" %}
+	document.getElementById('modaltext').innerHTML = 'Dafür werden wir Ihnen im Zeitraum vom <span id="mpayday1"></span> bis zum <span id="mpayday6"></span> wöchentlich <span class="eurVal"></span> Euro überweisen.';
+
+	{% else %}
+	document.getElementById('modaltext').innerHTML = 'Dafür überweisen wir Ihnen im Zeitraum vom <span id="mpayday1"></span> bis zum <span id="mpayday6"></span> wöchentlich <span class="eurVal"></span> Euro.';
+	{% endif %}
+	var str = el.id;
+	var substr = str.substring(4,6);
+	var selectedScheme = Number(substr);
+	document.getElementById('ticked').innerHTML = selectedScheme;	
+	document.getElementById('ticked2').innerHTML = selectedScheme;
+  document.getElementById("modalButton").style.display = '';
+     // assign Euro vals	
+	var eurarr = document.getElementsByClassName('eurVal');
+	    if (eurarr.length >= 1) {
+	      for (var i = 0; i < eurarr.length; i++) {
+            // show 2 decimals
+            var eurVal = scheme[selectedScheme-1][0];
+            var eurVal = eurVal.toFixed(2);
+	        eurarr[i].innerHTML = eurVal;
+	    	}
+	    }
+
+
+//	var today = new Date();
+	var today = new Date("Februar 8, 2017 10:00:00");
+	var startweek = scheme[selectedScheme-1][1];
+  	var schemepay = scheme[selectedScheme-1][0];
+	var  startdate = new Date(today.getTime() + (startweek* 7 * 24 * 60 * 60 * 1000));
+	var day =startdate.getDate();
+	var month=startdate.getMonth()+1;
+	var year=startdate.getFullYear();
+  	var storeDateString = [schemepay];
+	for(var k =1; k<7; k++){
+		var monthNames = ["None","Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+		var showMonth = monthNames[month];
+		var dateString = day+'. '+showMonth+' '+year;
+		storeDateString.push(dateString);
+		document.getElementById('payday'+k).innerHTML = dateString;
+		document.getElementById('mpayday'+k).innerHTML = dateString;
+		startdate = new Date(today.getTime() + ((startweek+k)* 7 * 24 * 60 * 60 * 1000));
+		day =startdate.getDate();
+		month=startdate.getMonth()+1;
+		year=startdate.getFullYear();	
+	}
+     // assign Euro vals
+	//$('.eurVal').html(schemepay);
+	     // show payment date texts
+	$('#transferdates').show();
+	     // assign storeDateString
+	     var storeString = storeDateString.join(',');
+	$('#id_paymentDates').val(storeDateString);
+	     // assign scheme to hidden input
+	$('#id_payoffScheme').val(selectedScheme);
+}
+
+
+
+var grid = clickableGrid(rw, col, function(el, row, col, i) {
+
+  if (el.className == 'clicked') {
+    //unTick();
+    unDisplayScheme();
+    el.className = 'notClicked';
+
+  } 
+  else {
+    var arr = document.getElementsByClassName('clicked');
+    if (arr.length >= 1) {
+      for (var i = 0; i < arr.length; i++) {
+        arr[i].className = 'notClicked';
+      }
+    }
+    el.className = 'clicked';
+    //tick();
+    //selectPayoffScheme();
+    displayScheme(el);
+  }
+});
+
+//document.body.appendChild(grid);
+
+
+//Grid-Button Quellcode from here
+function clickableGrid(rows, cols, callback) {
+  var i = 0;
+  //var grid = document.createElement('table');
+  var grid = document.getElementById('buttongrid');
+  grid.className = 'grid values';
+  for (var r = 0; r < rows; ++r) {
+    var tr = grid.appendChild(document.createElement('tr'));
+    for (var c = 0; c < cols; ++c) {
+      var cell = tr.appendChild(document.createElement('td'));
+      cell.id = 'cell' + (++i);
+      cell.className = 'notClicked';
+      if(w<680){
+          cell.innerHTML = '<button type="button" class="button' + 1 + 'small" style="vertical-align:middle"><span>' + i + '</span></button>';
+        }
+      else{
+          cell.innerHTML = '<button type="button" class="button' + 1 + '" style="vertical-align:middle"><span>' + i + '</span></button>';        
+      }
+      cell.addEventListener('click', (function(el, r, c, i) {
+        return function() {
+          callback(el, r, c, i);
+        }
+      })(cell, r, c, i), false);
+    }
+  }
+  return grid;
+}
+
+
+
+</script>
+{% endblock %}

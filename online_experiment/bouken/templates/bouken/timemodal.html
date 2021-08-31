@@ -1,0 +1,39 @@
+<button type="button" class="btn btn-primary btn-large btn-primary" onclick="modalOpen()" style="display: none" id="modalButton">Abschicken</button>
+  <!-- Modal -->
+  <div class="modal fade" id="SendChoices" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Ihre Auswahl:</h4>
+        </div>
+        <div class="modal-body">
+
+<span id="testshow"></span>
+            <p>Sie haben die Auszahlungsreihe <span id="ticked2"></span> gewählt.</p>
+            {% if role == "future" %}
+            <p id="modaltext">Dafür werden wir Ihnen im Zeitraum vom <span id="mpayday1"></span> bis zum <span id="mpayday6"></span> wöchentlich <span class="eurVal"></span> Euro überweisen.</p>
+            <!-- <p>Dafür werden wir Ihnen am <span id="mpayday2"></span> <span class="eurVal"></span> Euro überweisen.</p>-->  <span hidden id="mpayday2"></span>
+            <!-- <p>Dafür werden wir Ihnen am <span id="mpayday3"></span> <span class="eurVal"></span> Euro überweisen.</p>-->  <span hidden id="mpayday3"></span>
+            <!-- <p>Dafür werden wir Ihnen am <span id="mpayday4"></span> <span class="eurVal"></span> Euro überweisen.</p>-->  <span hidden id="mpayday4"></span>
+            <!-- <p>Dafür werden wir Ihnen am <span id="mpayday5"></span> <span class="eurVal"></span> Euro überweisen.</p>-->  <span hidden id="mpayday5"></span>
+            <!-- <p>Dafür werden wir Ihnen am <span id="mpayday6"></span <span class="eurVal"></span> Euro überweisen.</p>-->
+            {% else %}
+            <p id="modaltext">Dafür überweisen wir Ihnen im Zeitraum vom <span id="mpayday1"></span> bis zum <span id="mpayday6"></span> wöchentlich <span class="eurVal"></span> Euro.</p>
+            <!-- <p>Dafür überweisen wir Ihnen am <span id="mpayday2"></span> <span class="eurVal"></span> Euro.</p>-->  <span hidden id="mpayday2"></span>
+            <!-- <p>Dafür überweisen wir Ihnen am <span id="mpayday3"></span> <span class="eurVal"></span> Euro.</p>-->  <span hidden id="mpayday3"></span>
+            <!-- <p>Dafür überweisen wir Ihnen am <span id="mpayday4"></span> <span class="eurVal"></span> Euro.</p>-->  <span hidden id="mpayday4"></span>
+            <!-- <p>Dafür überweisen wir Ihnen am <span id="mpayday5"></span> <span class="eurVal"></span> Euro.</p>-->  <span hidden id="mpayday5"></span>
+            <!-- <p>Dafür überweisen wir Ihnen am <span id="mpayday6"></span> <span class="eurVal"></span> Euro.</p>-->
+           {% endif %}
+        </div>
+        <div class="modal-footer">
+            <p>Möchten Sie Ihre Eingabe abschicken?</p>
+		<button class="btn btn-primary btn-large next-button" type="submit" value="Next">Ja, Eingaben abschicken.</button>
+		<button type="button" class="btn btn-primary btn-large " data-dismiss="modal">Nein, Eingaben korrigieren.</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div

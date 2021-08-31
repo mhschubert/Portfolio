@@ -1,0 +1,74 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+ Anregungen zum Aufbau oder Bemerkungen bezüglich Fehler
+{% endblock %}
+
+{% block content %}
+<div class="panel-group" id="accordion">
+    <div class="panel panel-primary" id="panel1">
+        <div class="panel-heading">
+             <h4 class="panel-title">
+        <a data-toggle="collapse" data-target="#collapseOne" 
+           href="#collapseOne">
+            Hinweis
+        </a>
+      </h4>
+
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" data-toggle="false">
+            <div class="panel-body">
+ 
+Bitte geben Sie uns im Folgenden Ihre Anregungen oder Hinweise bezüglich Fehler oder Ungereimtheiten, die Ihnen während des Experiments aufgefallen sind oder in irgendwelcher Weise ungewöhnlich vorgekommen sind.
+<br>
+Vielen Dank dafür!
+<p></p>
+<textarea name="comments" id="id_comments" rows="20" cols="80"> </textarea>
+        </div>
+    </div>
+</div>
+</div>
+<br>
+<br>
+
+<p hidden id="bshow">
+        <input id="id_nextbutton" onclick="submitter()" class="btn btn-primary btn-large btn-primary next-button" type="submit" value="Weiter"/>
+</p>
+
+{% endblock %}
+
+{% block styles %}
+<style>
+.page-header {
+    background: url("{% static "StartPage/uni_bonn.svg" %}");
+    background-size: 170px 60px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+ .jswarn{
+    background: -moz-linear-gradient(bottom, #ffffff 0%, #8f0222 7%, #6d0019 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(bottom, #ffffff 0%,#8f0222 7%,#6d0019 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to top, #ffffff 0%,#8f0222 7%,#6d0019 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    position: absolute;
+    left:0px;
+    right:0px;
+    top:0px;
+    width:100%;
+    text-align: center;
+    color: #fff;
+     }
+
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+ $( document ).ready( function(){
+     $('#bshow').show();
+
+     });
+
+</script>
+
+{% endblock %}

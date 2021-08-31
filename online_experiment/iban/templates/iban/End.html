@@ -1,0 +1,33 @@
+{% extends "global/Base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+  <div class="panel-group">
+    <div class="panel panel-primary">
+        <div class="panel-heading"><h4>Vielen Dank!</h4></div>
+        <div class="panel-body">
+            <div id="container">
+            <p>Wir bedanken uns nochmals für Ihre Teilnahme und hoffen, dass Ihnen die neuen Online-Experimente der Universität Bonn Spaß bereitet haben.</p>
+            <p>Sie können die Seite jetzt verlassen.</p>
+        </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block styles %}
+
+<style>
+.page-header {
+    background: url("{% static "iban/uni_bonn.svg" %}");
+    background-size: 17%;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+</style>
+
+
+{% endblock %}
+

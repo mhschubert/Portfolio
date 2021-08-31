@@ -1,0 +1,321 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}Studienteil: Meide die Bombe {% endblock %}
+{% block content %}
+
+
+<div class="panel-group" id="accordion">
+    <div class="panel panel-warning" id="panel1">
+        <div class="panel-heading">
+             <h4 class="panel-title">
+        <a data-toggle="collapse" data-target="#collapseOne" class="btn-block" href="#collapseOne">
+            Erläuterungen
+        </a>
+      </h4>
+
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+{% if role == "future"%}
+
+                <p>In diesem Teil der Studie, "Meide die Bombe", werden Sie Felder anklicken. Für jedes Feld, das Sie auswählen werden, werden Sie 0,20 Euro erhalten.</p>
+                <p>Das Spielfeld wird aus 100 Feldern bestehen. Unter einem der Felder wird sich eine verdeckte Bombe befinden. Das Bombenfeld wird zufällig bestimmt werden, wobei alle Felder die gleiche Wahrscheinlichkeit haben werden die Bombe zu enthalten.</p>
+                <p>Wenn sich die Bombe unter einem von Ihnen gewählten Feld befindet, werden Sie keine Auszahlung aus diesem Spiel erhalten. (0.00 Euro)</p>
+                <p>Ist die Bombe nicht in den ausgewählten Feldern enthalten, werden Sie (Anzahl der ausgewählten Felder) * 0.20 Euro erhalten.</p>
+                <p>Ob Sie die Bombe ausgewählt haben, werden Sie auf <u>einer späteren Seite</u> erfahren.</p>
+
+{% elif role == "present" %}
+
+                <p>In diesem Teil der Studie, "Meide die Bombe", klicken Sie Felder an. Für jedes Feld, das Sie auswählen, erhalten Sie 0.20 Euro.</p>
+                <p>Das Spielfeld besteht aus 100 Feldern. Unter einem der Felder befindet sich eine verdeckte Bombe. Das Bombenfeld wird zufällig bestimmt, wobei alle Felder die gleiche Wahrscheinlichkeit haben die Bombe zu enthalten.</p>
+                <p>Wenn sich die Bombe unter einem von Ihnen gewählten Feld befindet, erhalten Sie keine Auszahlung aus diesem Spiel. (0.00 Euro)</p>
+                <p>Ist die Bombe nicht in den ausgewählten Feldern enthalten, erhalten Sie (Anzahl der ausgewählten Felder) * 0.20 Euro.</p>
+                <p>Ob Sie die Bombe ausgewählt haben, erfahren Sie auf <u>einer späteren Seite</u>.</p>
+
+{% endif %}
+        </div>
+    </div>
+</div>
+</div>
+<p></p>
+<p></p>
+<p></p>
+
+<p>Anzahl der derzeit ausgewählten Pakete: <a id="ticked"><b>0</b></a> (<span class="euroVal">0.00</span> Euro)</p>
+<input type="hidden" name="bombgamestring" id="id_bombgamestring">
+<input type="hidden" name="bomb" id="id_bomb">
+
+{% if role == "future" %}
+<span id="gridpos" value="">In 15 Sekunden wird hier das Spielfeld erscheinen.</span>
+{% elif role == "present" %}
+<span id="gridpos">In 15 Sekunden erscheint hier das Spielfeld.</span>
+{% endif %}
+
+{% include "bouken/modal.html" %}
+
+{% endblock %}
+{% block styles %}
+
+    <style type="text/css">
+ .panel-body{
+     font-size: 12pt;
+     }
+ .panel-title{
+     font-weight: bold;
+     }
+ #bshow{
+     margin-top: 20px;
+     }
+
+.grid { margin:1em auto; border-collapse:collapse }
+.grid td {
+    cursor:pointer;
+    width:20px; height:20px;
+    border:1px solid #ccc;
+    text-align:center;
+    font-family:sans-serif; font-size:13px
+}
+
+.grid td.clicked {
+    background-color:white;
+    font-weight:bold; color:red;
+}
+.next-button {
+    text-align:0px;
+}
+.panel-heading a:after {
+    font-family:'Glyphicons Halflings';
+    content:"\e114";
+    float: right;
+    color: "\e080";
+}
+.panel-heading a.collapsed:after {
+    content:"\e080";
+}
+#accordion{
+    margin-bottom:20px;
+}
+.page-header {
+    background: url("{% static "iban/uni_bonn.svg" %}");
+    background-size: 170px 60px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+.modal-header {
+	font-weight:bold;
+}
+.modal-content {
+	background-color: #839ccc;
+	color: #fff;
+	text-align:center;
+}
+.modal-body{
+	background-color: #fff;
+	color: #000;
+}
+.modal-footer{
+	text-align:center;
+}
+    </style>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+$( document ).ready(function() {
+        setTimeout(function(){
+            document.getElementById("modalButton").style.display = '';
+        },25000);
+        setTimeout(function(){
+            $("#gridpos").text("");
+            document.getElementById("gridpos").appendChild(grid);
+        },15000);
+    	$("#modalFields").text(0);
+    	$("#numbSel").text(0);
+    	$("#euroVal").text(0);
+    	document.getElementById('zerotest').innerHTML = "Sie haben keine Felder ausgewählt";
+});
+
+
+
+var w = window.innerWidth;
+var h = window.innerHeight;
+var cellsize;
+var picturesize;
+if (w < 680) {
+    cellsize = 30;
+    picturesize = 30;
+}
+else{
+    cellsize = 40;
+    picturesize= 40;
+}
+//Resizing Function in case of window size change
+function watch(){
+  w = window.innerWidth;
+  h = window.innerHeight;
+  if (w < 680) {
+
+    for(var k =1; k<=100;k++){
+
+        var widthar= document.getElementById('button'+k);
+        widthar.style.width='30px';
+        widthar.style.height='30px';
+        widthar.style.fontSize='8px';
+        widthar= document.getElementById('picture'+k);
+        widthar.style.width='30px';
+        widthar.style.height='30px';
+
+    }
+  }
+  else if(w>680){
+    for(var k =1; k<=100;k++){
+
+        var widthar= document.getElementById('button'+k);
+        widthar.style.width='40px';
+        widthar.style.height='40px';
+        widthar.style.fontSize='14px';
+        widthar= document.getElementById('picture'+k);
+        widthar.style.width='40px';
+        widthar.style.height='40px';
+    }
+  }
+}
+window.addEventListener("resize", watch);
+
+
+function modalOpen(){
+    $("#SendChoices").modal('toggle');
+}
+
+
+//Array für Indizes der ausgewählten Felder
+var selected = [];
+document.getElementById("id_bombgamestring").value = 101;
+document.getElementById('zerotest').innerHTML = "Sie haben keine Felder ausgewählt";
+//Bin mir nicht sicher, ob ich die verwende
+var ticks = 0;
+//Platziere Bombe
+document.getElementById("id_bomb").value = Math.floor((Math.random()*100)+1);
+//Anzahl an ausgewählten Feldern
+function isTicked() {
+ticked= selected.length;
+document.getElementById("ticked").innerHTML = ticked;
+var pay = Math.round((ticked * 0.2) * 100) / 100; //{{Constants.bombmulti}};
+pay = pay.toFixed(2);
+var pays = pay.toString();
+$(".euroVal").text(pays);
+}
+
+//Hält das Array mit den Indizes der ausgewählten Felder aktuell
+function track(el, row, col, i){
+    if(el.className == 'clicked'){
+        var index = selected.indexOf(i);
+        var slice = selected.splice(index,1);
+        }
+    else{
+        selected[selected.length] = i;
+    }
+}
+
+//Ändert die visibility der Buttons und der Parcel.png je nachdem ob nicht ausgewählt oder ausgewählt
+function visibility(el,row, col, i){
+    var button = 'button'+i;
+    var pic = 'picture'+i;
+    if(el.className == 'clicked'){
+        document.getElementById(pic).style.display = "none";
+        document.getElementById(button).style.display = '';
+    }
+    else{
+        document.getElementById(pic).style.display = '';
+        document.getElementById(button).style.display = 'none';
+    }
+}
+     // numerical sorting
+        function sortNumber(a,b) {
+            return a - b;
+        }
+//erstellt via Java-Script den grid table am Ende des Dokuments
+var grid = clickableGrid(10,10,function(el,row,col,i){
+    if(el.className == 'clicked') {
+        track(el, row, col, i);
+        visibility(el, row, col, i);
+        el.className='notclicked';
+        isTicked();
+    }
+    else {
+        track(el, row, col, i);
+        visibility(el, row, col, i);
+        el.className='clicked';
+        isTicked();
+    }
+
+    selected.sort(sortNumber);
+
+    var str = selected.toString();
+     // added by Felix
+        var x;
+        //checks for zero selection
+        if(selected.length<1){
+           // window.alert('zerotest');
+        	document.getElementById("id_bombgamestring").value = 101;
+        	x =0;
+    		document.getElementById('zerotest').innerHTML = "Sie haben keine Felder ausgewählt";
+        }
+        else{
+    		document.getElementById('zerotest').innerHTML = 'Sie haben die Felder <span id="modalFields"></span> ausgewählt.';
+    		document.getElementById("id_bombgamestring").value = str;
+        	x = selected.length;
+        	var breaks = str.replace(/,/g," ");
+        	$("#modalFields").text(breaks);
+        }
+        var x = x.toString();
+        $("#numbSel").text(x);
+
+
+});
+
+
+
+
+//Funktion, die das Grid erstellt
+function clickableGrid( rows, cols, callback ){
+    var i=0;
+    var grid = document.createElement('table');
+    grid.className = 'grid';
+    for (var r=0;r<rows;++r){
+        var tr = grid.appendChild(document.createElement('tr'));
+        for (var c=0;c<cols;++c){
+            var cell = tr.appendChild(document.createElement('td'));
+            cell.id = 'cell'+(++i);
+            cell.className = 'notclicked';
+            if(window.innerWidth<680){
+	            cell.innerHTML = '<img src="{% static "bouken/packaget.png" %}" style="width:'+picturesize+'px;height:'+picturesize+'px; display:none;" id="picture'+i+'" class="sideviewtoggle myPicture"><button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="font-size:8px; width:'+cellsize+'px;height:'+cellsize+'px;display:"";">'+(i)+' </button>';
+        	}
+        	else{
+        		cell.innerHTML = '<img src="{% static "bouken/packaget.png" %}" style="width:'+picturesize+'px;height:'+picturesize+'px; display:none;" id="picture'+i+'" class="sideviewtoggle myPicture"><button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="width:'+cellsize+'px;height:'+cellsize+'px;display:"";">'+(i)+' </button>';
+        	}
+            cell.addEventListener('click',(function(el,r,c,i){
+                return function(){
+                    callback(el,r,c,i);
+                }
+            })(cell,r,c,i),false);
+        }
+    }
+    return grid;
+}
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+

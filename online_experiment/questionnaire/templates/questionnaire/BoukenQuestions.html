@@ -1,0 +1,73 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+Bitte wählen Sie die auf Sie zutreffenden Optionen aus.
+{% endblock %}
+
+{% block content %}
+
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Frage</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for field in form %}
+        <tr>
+            <td>{% formfield field %}</td>
+        </tr>
+
+    {% endfor %}
+    </tbody>
+</table>
+   
+<p>
+  {% next_button %}
+</p>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+
+
+    $( document ).ready(function() {
+            setTimeout(function(){
+                document.getElementById("id_nextbutton").style.display = '';
+            },25000);
+    });
+
+$("#id_qBoukenSmokeFreq").prop('disabled',true);
+
+    $("#id_qBoukenSmoke_0").click(function(){
+        if ($("#id_qBoukenSmoke_0").is(":checked")){
+            $("#id_qBoukenSmokeFreq").prop('disabled',false);
+        }
+    });
+
+    $("#id_qBoukenSmoke_1").click(function(){
+        if ($("#id_qBoukenSmoke_1").is(":checked")){
+            $("#id_qBoukenSmokeFreq").prop('disabled',true).prop('value',"");
+        }
+    }); 
+
+
+
+	  </script>
+{% endblock %}
+
+    {% block styles %}
+    <style>
+
+.page-header {
+    background: url("{% static "questionnaire/MPI_logo_gruen_transparent.png" %}");
+    background-size: 170px 60px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+    </style>
+    {% endblock %}

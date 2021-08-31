@@ -1,0 +1,82 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Fragen zur Person
+    
+ {% endblock %}
+
+
+
+
+
+{% block content %}
+
+<p>Wir bitten Sie nun noch einige Fragen zu beantworten. Die Beantwortung der Fragen ist freiwillig und Sie können beliebig viele unbeantwortet lassen.
+Jedoch würden Ihre Antworten uns sehr bei der Auswertung des Experiments helfen und Sie würden der Wissenschaft somit einen großartigen Dienst erweisen.</p>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Frage</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for field in form %}
+        <tr>
+            <td>{% formfield field %}</td>
+        </tr>
+
+    {% endfor %}
+    </tbody>
+</table>
+
+
+
+<!--
+Documentation on how to write a django template here:
+https://docs.djangoproject.com/en/1.8/ref/templates/language/
+
+Bootstrap comes pre-loaded, so you can use any Bootstrap elements:
+http://getbootstrap.com/components/
+
+-->
+    {% next_button %}
+{% endblock %}
+
+
+    {% block styles %}
+    <style>
+
+.page-header {
+    background: url("{% static "iban/uni_bonn.svg" %}");
+    background-size: 170px 60px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+    </style>
+    {% endblock %}
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+
+    $( document ).ready(function() {
+        $('form input').on('keypress', function(e) {
+    return e.which !== 13;
+        });;
+    });
+$("#id_qPetKind").prop('disabled',true);
+
+    $("#id_qPetBoolean_0").click(function(){
+        if ($("#id_qPetBoolean_0").is(":checked")){
+            $("#id_qPetKind").prop('disabled',false);
+        }
+    });
+    $("#id_qPetBoolean_1").click(function(){
+        if ($("#id_qPetBoolean_1").is(":checked")){
+            $("#id_qPetKind").prop('disabled',true).prop('value',"");
+        }
+    });  
+</script>
+
+{% endblock %}

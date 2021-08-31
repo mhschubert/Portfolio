@@ -1,0 +1,112 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+
+  {% if iswinner == True %}
+  <div class="panel-group">
+    <div class="panel panel-success">
+        <div class="panel-heading"><h4>Sie haben gewonnen!!!</h4></div>
+        <div class="panel-body">
+
+            <div id="container" style="margin-bottom:10px;" style="display:block;margin-bottom:10px;">
+                <div style="float:left;"><img src='{% static "oneinx/dollar.png" %}' style="width:100px;"></div>
+                <div style="float:right;"><img src='{% static "oneinx/dollar.png" %}' style="width:100px;"></div>
+                <div style="float:center;text-align:center;"><h3>Sie wurden für die Auszahlung ausgelost.</h3>
+                    <p>Aus dem Teil 'Meide die Bombe' erhalten Sie <span id="id_bombpay"></span> Euro.</p>
+                    <p>Aus dem Teil 'Wähle die Zeit' erhalten Sie <span id="id_timepay"></span> Euro an folgenden Terminen überwiesen:</p>
+                    {% for el in timedates %}
+                    <p>{{el}}</p>
+                    {% endfor %}
+                    <p>Die Auszahlung aus dem Fragebogen kann erst nach Abschluss der Studie ermittelt werden.</p>
+                <p>Bitte geben Sie Ihre E-Mail-Adresse und Ihren Namen für die Kontaktaufnahme an.</p>
+                </div>
+            </div>
+    <div class="row" style="display:block;margin-top:10px;">
+            <div class="col-sm-5">
+                <label class="control-label" for="id_iban">E-Mail:</label>
+                <div class="controls  field-qemail">
+                    <input id="id_qemail" name="qemail" type="text" style="width:100%;"/>
+                </div><!--- .controls -->
+{{ form.qemail.errors }}
+            </div>
+            <div class="col-sm-4">
+                <label class="control-label" for="id_bic">Name:</label>
+                <div class="controls  field-qmailname">
+                    <input id="id_qmailname" name="qmailname" type="text"  style="width:100%;"/>
+                </div><!--- .controls -->
+{{ form.qmailname.errors }}
+            </div>
+    </div>
+
+
+                <p>Nach dem Abschicken Ihrer Eingaben wird <b>der <a href="https://www.iame.uni-bonn.de/people/felix-albrecht" target="new">Studienleiter</a> automatisch via E-Mail informiert und nimmt umgehend mit Ihnen Kontakt auf</b>, um den Auszahlungsablauf sicherzustellen.</p>
+                <p>Weiterhin werden Sie auf eine verschlüsselte Seite weitergeleitet, auf welcher Ihre Bankdaten für die Banküberweisung abgefragt werden. Zu Ihrer Sicherheit werden Ihre Bankdaten verschlüsselt an uns übermittelt und nur für den Zweck der Auszahlung verwendet.</p>
+                <p style="text-align:right;"> <input class="btn btn-primary btn-large btn-primary next-button" type="submit" value="Abschicken und weiter zu Bankdaten" /></p>
+        </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="panel-group">
+    <div class="panel panel-danger">
+        <div class="panel-heading"><h4>Leider nicht gewonnen.</h4></div>
+        <div class="panel-body">
+            <div id="container">
+                <div style="float:left;"><img src="{% static 'oneinx/no-money.png' %}" style="width:100px;"></div>
+                <div style="float:right;"><img src="{% static 'oneinx/no-money.png' %}" style="width:100px;"></div>
+                <div style="margin: 0 auto;text-align:center;"><h3>Sie wurden leider nicht für die Auszahlung ausgelost.</h3></div>
+            </div>
+            <p style="text-align:center;">Wir bedanken uns nochmals für Ihre Teilnahme und hoffen, dass Ihnen die neuen Online-Experimente der Universität Bonn Spaß bereitet haben.<br>
+            Als kleine Entschädigung haben wir ein Video für Sie.</p>
+            <p style="text-align:center;">Sie können die Seite jetzt schließen oder mit einem <a href="https://youtu.be/0Bmhjf0rKe8">Klick</a> etwas Entspannendes zu sehen bekommen.</p>
+        </div>
+    </div>
+  </div>
+
+
+  {% endif %}
+
+{% endblock %}
+
+{% block styles %}
+
+<style>
+.page-header {
+    background: url("{% static "iban/uni_bonn.svg" %}");
+    background-size: 170px 60px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+</style>
+
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+    
+var bombpayoff = {{bombpay}};
+bombpayoff = Number(bombpayoff);
+bombpayoff = round(bombpayoff);
+document.getElementById('id_bombpay').innerHTML = bombpayoff;
+
+var timepayoff = {{timepay}};
+timepayoff = Number(timepayoff);
+timepayoff = round(timepayoff);
+document.getElementById('id_timepay').innerHTML = timepayoff;
+//Round-function for precision problem which would costs us a few million in euros
+function round(rounded){
+        var value = rounded.toFixed(2);
+        return value;
+}
+
+
+
+
+</script>
+
+{% endblock %}

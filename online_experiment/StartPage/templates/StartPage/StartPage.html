@@ -1,0 +1,126 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Herzlich willkommen zur Studie!
+{% endblock %}
+
+{% block content %}
+<div class="panel-group" id="accordion">
+    <div class="panel panel-primary" id="panel1">
+        <div class="panel-heading">
+             <h4 class="panel-title">
+        <a data-toggle="collapse" data-target="#collapseOne" 
+           href="#collapseOne">
+            Hinweis
+        </a>
+      </h4>
+
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" data-toggle="false">
+            <div class="panel-body">
+ 
+Herzlich willkommen zur Online-Studie des BonnEconLab. Bitte beachten Sie, dass Sie an dieser Studie nur teilnehmen dürfen, wenn Sie sich in unserer Teilnahmedatenbank (<a target=_blank href="https://experimente.bonneconlab.uni-bonn.de/">experimente.bonneconlab.uni-bonn.de</a>) hierfür angemeldet haben.
+
+<br>
+<br>
+
+Bitte geben Sie im folgenden Feld Ihre E-Mail-Adresse an, mit der Sie in der BonnEconLab-Teilnahmedatenbank registriert sind. Nur, wenn Sie hier die richtige E-Mail-Adresse eingeben, kann auch eine Auszahlung sichergestellt werden.
+
+<br>
+<br>
+
+{% formfield player.Email with label="Email Adresse" %} 
+<p></p>
+<p>(Sollten technische Probleme auftreten, wenden Sie sich bitte an <u>f.albrecht at uni-bonn.de</u> .)</p>
+        </div>
+    </div>
+</div>
+</div>
+<br>
+<br>
+
+<p hidden id="bshow">
+        <input class="btn btn-primary btn-large btn-primary next-button" type="submit" value="Weiter"/>
+</p>
+<noscript id="jswarn">
+    <h4><b>Diese Seite benötigt JavaScript. Bitte aktivieren Sie JavaScript in Ihrem Browser.</b></h4>
+</noscript>
+<div id="browserwarn">
+    <h4><b>Diese Webseite enthält Elemente, die Ihr Browser möglicherweise nicht verarbeiten kann. Bitte nutzen Sie einen anderen Browser für die Teilnahme an dieser Studie. (z.B. eine aktuelle Version von Chrome oder Firefox)</b></h4>
+</div>
+
+<input type="hidden" name="user_agent" id="id_user_agent">
+<input type="hidden" name="window_height" id="id_window_height">
+<input type="hidden" name="window_width" id="id_window_width">
+{% endblock %}
+
+{% block styles %}
+<style>
+.page-header {
+    background: url("{% static "StartPage/uni_bonn.svg" %}");
+    background-size: 170px 60px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+#jswarn{
+    background: -moz-linear-gradient(bottom, #ffffff 0%, #8f0222 7%, #6d0019 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(bottom, #ffffff 0%,#8f0222 7%,#6d0019 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to top, #ffffff 0%,#8f0222 7%,#6d0019 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    position: absolute;
+    left:0px;
+    right:0px;
+    top:0px;
+    width:100%;
+    text-align: center;
+    color: #fff;
+     }
+#browserwarn{
+    background: -moz-linear-gradient(top, #ffffff 0%, #8f0222 7%, #6d0019 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top , #ffffff 0%,#8f0222 7%,#6d0019 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #ffffff 0%,#8f0222 7%,#6d0019 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    position: absolute;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    width:100%;
+    text-align: center;
+    color: #fff;
+     }
+
+
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+ $( document ).ready( function(){
+     $(':input').prop('unchecked');
+     $(':input').val('');
+     $('.next-button').val("Weiter");
+     // catch browser
+    var x = navigator.userAgent;
+    $( '#id_user_agent' ).val(x);
+    var winh = $(window).height();
+    var winw = $(window).width();
+    $( '#id_window_height' ).val(winh);
+    $( '#id_window_width' ).val(winw);
+
+     // detecting Safari Mobile Version < 7
+    var osInds = x.indexOf('OS ')+3;
+    var osInde = x.indexOf("_",osInds)-1;
+    var combNum = x[osInds]+x[osInde];
+    var osNum = Number(osNum);
+    var defectSafari = x.indexOf('AppleWebKit') > -1 && x.indexOf('Mobile') > -1 && osNum < 7;
+     // detecting Android native browser without update
+    var defectAndroid = x.indexOf('534.30') > 0 && x.toLowerCase().match(/android/);
+
+    if (!defectAndroid && !defectSafari) {
+        $('#bshow').show();
+        $('#browserwarn').hide();
+    }
+});
+
+</script>
+
+{% endblock %}

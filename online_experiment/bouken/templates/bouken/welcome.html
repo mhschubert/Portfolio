@@ -1,0 +1,76 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Allgemeine Beschreibung
+{% endblock %}
+
+{% block content %}
+<div class="panel-group" id="accordion">
+    <div class="panel panel-primary" id="panel1">
+        <div class="panel-heading">
+             <h4 class="panel-title">
+            Allgemeines
+      </h4>
+
+        </div>
+            <div class="panel-body">
+{% if role == "future" %}
+                <p>Sie werden an einer wirtschaftswissenschaftlichen Studie teilnehmen.</p>
+                <p><b>Bitte lesen Sie alle Erklärungen in dieser Studie aufmerksam und genau durch.</b><p>
+                </p>Es ist wichtig, dass Sie alle Erklärungen genau verstehen, da Sie abhängig von Ihren Entscheidungen die Möglichkeit haben werden, eine <b>beträchtliche Summe Geld</b> zu erhalten.</p>
+                <p>Wie viel Geld Sie am Ende der Studie tatsächlich erhalten werden, wird von Ihren Entscheidungen sowie einer Lotterie abhängen. Wir werden unter allen Teilnehmern mehrere Auszahlungen verlosen.  Nur die Lotteriegewinner werden eine Auszahlung erhalten. Wir werden Sie auf den folgenden Seiten nicht erneut auf die Lotterie hinweisen.</p></p>
+                <p><b>Hinweis:</b> Damit Sie nicht aus Versehen auf den <b>'Weiter'-Button</b> klicken, <b>wird</b> der Button jeweils <b>mit einer kurzen zeitlichen Verzögerung erscheinen</b>.</p>
+
+{% elif role == "present" %}
+                <p>Sie nehmen an einer wirtschaftswissenschaftlichen Studie teil.</p>
+                <p><b>Bitte lesen Sie alle Erklärungen in dieser Studie aufmerksam und genau durch.</b><p>
+                </p>Es ist wichtig, dass Sie alle Erklärungen genau verstehen, da Sie abhängig von Ihren Entscheidungen die Möglichkeit haben, eine <b>beträchtliche Summe Geld</b> zu erhalten.</p>
+                <p>Wie viel Geld Sie am Ende der Studie tatsächlich erhalten, hängt von Ihren Entscheidungen sowie einer Lotterie ab. Wir verlosen unter allen Teilnehmern mehrere Auszahlungen. Nur die Lotteriegewinner erhalten eine Auszahlung. Wir weisen Sie auf den folgenden Seiten nicht erneut auf die Lotterie hin.</p>
+                <p><b>Hinweis:</b> Damit Sie nicht aus Versehen auf den <b>'Weiter'-Button</b> klicken, <b>erscheint</b> der Button jeweils <b>mit einer kurzen zeitlichen Verzögerung</b>.</p>
+
+
+{% endif %}
+    </div>
+</div>
+</div>
+
+<div hidden id="bshow"> 
+<input class="btn btn-primary btn-large btn-primary next-button" type="submit" value="Weiter"/>
+</div>
+
+
+{% endblock %}
+
+{% block styles %}
+
+<style>
+.page-header {
+    background: url("{% static "StartPage/uni_bonn.svg}" %}");
+    background-size: 170px 60px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+ .panel-body{
+     font-size: 12pt;
+     }
+ .panel-title{
+     font-weight: bold;
+     }
+ #bshow{
+     margin-top: 20px;
+     }
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+ var bshow = function(){
+     $("#bshow").show();
+ }
+
+ window.setTimeout(bshow,15000);
+</script>
+
+{% endblock %}

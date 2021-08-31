@@ -1,0 +1,27 @@
+<button type="button" class="btn btn-primary btn-large btn-primary" onclick="modalOpen()" style="display: none" id="modalButton">Abschicken</button>
+  <!-- Modal -->
+  <div class="modal fade" id="SendChoices" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Ihre Auswahl:</h4>
+        </div>
+        <div class="modal-body">
+            <p id="zerotest">Sie haben die Felder <span id="modalFields"></span> ausgewählt.</p>
+            {% if role == "future" %}
+            <p>Wenn Sie die Bombe nicht ausgewählt haben, werden Sie für die gewählten <span id="numbSel"></span> Felder <span class="euroVal"></span> Euro erhalten.</p>
+            {% else %}
+            <p>Wenn Sie die Bombe nicht ausgewählt haben, erhalten Sie für die gewählten <span id="numbSel"></span> Felder <span class="euroVal"></span> Euro.</p>
+           {% endif %}
+        </div>
+        <div class="modal-footer">
+            <p>Möchten Sie Ihre Eingaben abschicken?</p>
+		<button class="btn btn-primary btn-large next-button" type="submit" value="Next">Ja, Eingaben abschicken.</button>
+		<button type="button" class="btn btn-primary btn-large " data-dismiss="modal">Nein, Eingaben korrigieren.</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,225 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Textfrage {{round}}
+ {% endblock %}
+
+{% block content %}
+
+<!-- Explanation only for RISK task -->
+
+    <div id="accordion" class="card">
+      <div class="card-header">
+        <a class="card-link" data-toggle="collapse" href="#collapseOne">
+          Erläuterungen
+        </a>
+      </div>
+      <div id="collapseOne" class="collapse show" data-parent="#accordion">
+        <div class="card-body">
+    {% if role == "future" %}
+        {% if type == "risk" %}
+                        <p>Wie <u>sicher</u> sind sich Ihrer Meinung nach die anderen Teilnehmer, die diesen Text lesen im Durchschnitt, dass das in der Frage dargestellte Ereignis eintreten wird.</p>
+                        <p>Wenn Sie den Durchschnitt der anderen Teilnehmer genau treffen, werden Sie für diese Frage 2 Euro erhalten. Weichen Sie weniger als {{ Constants.dev }}% vom Durchschnitt, ab werden Sie 1 Euro erhalten.</p>
+                        <p style="text-align:center;"><i>Beachten Sie, dass es jedoch für die Beantwortung der <u>unten gestellten</u> Fragen <u>kein</u> Richtig oder Falsch gibt.</i></p>
+                        <p><b>Hinweis:</b> Klicken sie auf den rot-grünen Balken um einen Prozentwert auszuwählen. Alternativ können Sie Ihre Antwort auch direkt in "Sie halten es für zu [Eingabe]% sicher." eingeben</p>
+        {% elif type == "time" %}
+                <p>Bitte geben Sie an, <u>welche Option</u> Ihrer Meinung nach die <u>meisten Teilnehmer</u> wählen werden, die diesen Text lesen.</p>
+                        <p>Wenn Sie die Option, die die meisten Teilnehmer wählen werden, richtig bestimmen, werden Sie für Ihre Antwort zusätzlich 1 Euro erhalten.</p>
+                        <p style="text-align:center;"><i>Beachten Sie, dass es für die Beantwortung der <u>unten gestellten</u> Fragen <u>kein</u> Richtig oder Falsch gibt.</i></p>
+        {% endif %}
+    {% elif role == "present" %}
+        {% if type == "risk" %}
+                        <p>Wie <u>sicher</u> sind sich Ihrer Meinung nach die anderen Teilnehmer, die diesen Text lesen im Durchschnitt, dass das in der Frage dargestellte Ereignis eintritt.</p>
+                        <p>Wenn Sie den Durchschnitt genau treffen, erhalten Sie für diese Frage 2 Euro. Weichen Sie weniger als {{ Constants.dev }}% vom Durchschnitt ab erhalten Sie 1 Euro.</p>
+                        <p style="text-align:center;"><i>Beachten Sie, dass es jedoch für die Beantwortung der <u>unten gestellten</u> Fragen <u>kein</u> Richtig oder Falsch gibt.</i></p>
+                        <p><b>Hinweis:</b> Klicken sie auf den rot-grünen Balken um einen Prozentwert auszuwählen. Alternativ können Sie Ihre Antwort auch direkt in "Sie halten es für zu [Eingabe]% sicher." eingeben</p>
+        {% elif type == "time" %}
+                <p>Bitte geben Sie an, <u>welche Option</u> Ihrer Meinung nach die <u>meisten Teilnehmer</u> wählen, die diesen Text lesen.</p>
+                        <p>Wenn Sie die Option, die die meisten Teilnehmer wählen, richtig bestimmen, erhalten Sie für diese Frage zusätzlich 1 Euro.</p>
+                        <p style="text-align:center;"><i>Beachten Sie, dass es für die Beantwortung der <u>unten gestellten</u> Fragen <u>kein</u> Richtig oder Falsch gibt.</i></p>
+        {% endif %}
+    {% endif %}
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Textbox shown to participant -->
+    <div class="card">
+      <div class="card-header">
+        <a class="card-link vignette">
+          {{question}}
+        </a>
+      </div>
+    </div>
+
+
+{% if type == "risk" %}
+<!-- Sliderbar if type of question is 'risk'  -->
+<p></p>
+<p style="font-weight:bold;">
+  {% if role == "future" %}
+      Sie sagen, die anderen Teilnehmer werden es im Durchschnitt für zu <input name="vigAnswer" id="id_vigAnswer" value="" maxlength="3" min="0" max="100" size="1"/>% sicher halten.
+  {% elif role == "present" %}
+      Sie sagen, die anderen Teilnehmer halten es im Durchschnitt für zu <input name="vigAnswer" id="id_vigAnswer" value="" maxlength="3" min="0" max="100" size="1"/>% sicher.
+  {% endif %}
+</p>
+<div id="slider" class="slider-bar">
+  <div id="custom-handle" class="ui-slider-handle"></div>
+</div>
+
+
+
+<!-- Radiobutton list if question is 'time' -->
+{% elif type == "time" %}
+<div class="form-group required">
+  {% if role == "future" %}
+    <label class="control-label" for="id_vigTime2">Wählen Sie das Zeitfenster, von dem Sie sagen, dass die anderen Teilnehmer in dieses das Ereignis aus dem Text einordnen werden :</label>
+  {% elif role == "present" %}
+    <label class="control-label" for="id_vigTime2">Wählen Sie das Zeitfenster, von dem Sie sagen, dass die anderen Teilnehmer in dieses das Ereignis aus dem Text einordnen:</label>
+  {% endif %}
+        <div class="controls  field-vigTime2">
+            <ul>
+	<li><label for="id_vigAnswer_1"><input type="radio" id="id_vigAnswer_1" value="1" name="vigAnswer" required> in weniger als 1 Woche</label></li>
+
+	<li><label for="id_vigAnswer_2"><input type="radio" id="id_vigAnswer_2" value="2" name="vigAnswer" required>  in 1 bis 2 Wochen</label></li>
+
+	<li><label for="id_vigAnswer_3"><input type="radio" id="id_vigAnswer_3" value="3" name="vigAnswer" required> in 2 bis 3 Wochen </label></li>
+
+	<li><label for="id_vigAnswer_4"><input type="radio" id="id_vigAnswer_4" value="4" name="vigAnswer" required> in 3 bis 4 Wochen</label></li>
+
+	<li><label for="id_vigAnswer_5"><input type="radio" id="id_vigAnswer_5" value="5" name="vigAnswer" required> in 4 bis 5 Wochen</label></li>
+
+	<li><label for="id_vigAnswer_6"><input type="radio" id="id_vigAnswer_6" value="6" name="vigAnswer" required> in 5 bis 6 Wochen </label></li>
+
+	<li><label for="id_vigAnswer_7"><input type="radio" id="id_vigAnswer_7" value="7" name="vigAnswer" required> später als 1,5 Monate</label></li>
+
+	<li><label for="id_vigAnswer_8"><input type="radio" id="id_vigAnswer_8" value="8" name="vigAnswer" required> später als 2 Monate</label></li>
+
+	<li><label for="id_vigAnswer_9"><input type="radio" id="id_vigAnswer_9" value="9" name="vigAnswer" required> später als 3 Monate</label></li>
+
+	<li><label for="id_vigAnswer_10"><input type="radio" id="id_vigAnswer_10" value="10" name="vigAnswer" required> später als 4 Monate</label></li>
+
+	<li><label for="id_vigAnswer_11"><input type="radio" id="id_vigAnswer_11" value="11" name="vigAnswer" required> später als 6 Monate</label></li>
+</ul>
+</div><!--- .controls -->
+</div><!--- .form-group -->
+{% endif %}
+
+{{ form.vigAnswer.errors }}
+
+<!--
+Documentation on how to write a django template here:
+https://docs.djangoproject.com/en/1.8/ref/templates/language/
+
+Bootstrap comes pre-loaded, so you can use any Bootstrap elements:
+http://getbootstrap.com/components/
+
+-->
+<p></p>
+<p></p>
+    <button class="btn btn-primary btn-large nextbutton" style="display: none" id="id_nextbutton">Weiter</button>
+
+
+{% endblock %}
+{% block scripts %}
+  <script src="{% static "questionnaire/jquery-ui.min.js" %}"></script>
+  <script type="text/javascript">
+
+$(document).ready( function() {
+    //$( '#id_vigAnswer' ).val(50);
+    setTimeout(function(){
+            document.getElementById("id_nextbutton").style.display = '';
+        },1);
+    $('form input').on('keypress', function(e) {
+    		return e.which !== 13;
+        });;
+    });
+
+$(function() {
+    var handle = $( "#custom-handle" );
+    $( "#slider" ).slider({
+      min: 0,
+      max: 100,
+      value: 50,
+      step: 1,
+      //create: function() {
+      //},
+      slide: function( event, ui ) {
+        handle.show();
+        handle.text( $( this ).slider( "value" ) );
+        //$( "#amount" ).text( ui.value );
+        $( "#id_vigAnswer" ).val( ui.value );
+        handle.text( ui.value );
+        if(ui.value < 50){
+          $("#amount").attr("style","color:#c80000;");
+
+        }
+        else if(ui.value > 50){
+          $("#amount").attr("style","color:#00c800;");
+         }
+        else{
+          $("#amount").attr("style","color:#000000;");
+            }
+      }
+    });
+  });
+
+   </script>
+
+ {% endblock %}
+
+
+ {% block styles %}
+
+  <link rel="stylesheet" href="{% static "questionnaire/jquery-ui.css" %}">
+   <style type="text/css">
+.slider-bar{
+  background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #c80000), color-stop(0.5, #ffffff), color-stop(1, #00c800) );
+  background-image: gradient( linear, left top, right top, color-stop(0, #c80000), color-stop(0.5, #ffffff), color-stop(1, #00c800) );
+}
+
+    .card-body{
+        font-size: 12pt;
+        }
+    .vignette{
+        font-size: 14pt;
+        }
+
+
+#custom-handle {
+    width: 2em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -.8em;
+    margin-left: -1em;
+    text-align: center;
+    line-height: 1.6em;
+  }
+.card-heading a:after {
+    font-family:'Glyphicons Halflings';
+    content:"\e114";
+    float: right;
+    color: "\e080";
+}
+.card-heading a.collapsed:after {
+    content:"\e080";
+}
+#accordion{
+    margin-bottom:20px;
+}
+.page-header {
+    background: url("{% static "questionnaire/MPI_logo_gruen_transparent.png" %}");
+    background-size: 76px 76px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+.form-group{
+    margin-left: 15%;
+    margin-top: 20px;
+        }
+   </style>
+
+ {% endblock %}
+

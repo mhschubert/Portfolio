@@ -1,0 +1,434 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Frage 9
+ {% endblock %}
+
+{% block content %}
+<div class="panel-group" id="msg">
+    <div class="panel panel-warning" id="panel1">
+        <div class="panel-heading">
+             <h4 class="panel-title">
+        <a data-toggle="collapse" data-target="#collapseZero" class="btn-block" href="#collapseZero">
+            Erläuterung
+        </a>
+      </h4>
+
+        </div>
+        <div id="collapseZero" class="panel-collapse collapse in" data-toggle="false">
+            <div class="panel-body">
+                <p>In den fünf grauen Boxen unten finden Sie <b>jeweils 2 Sätze</b>. Bitte wählen Sie in jeder Box aus, <b>welcher Satz</b> sich für Sie <b>natürlicher</b> anfühlt. In der blauen Box darunter wird Ihnen der Gesamttext angezeigt, der sich aus den von Ihnen gewählten Sätzen ergibt. Auch hier gilt, <i>es gibt kein Richtig oder Falsch</i>.</p>
+                <p><b>Hinweis:</b> Sie können Ihre Auswahlen durch Anklicken der Boxentitel jederzeit noch einmal aufrufen und ändern.</p>
+        </div>
+    </div>
+</div>
+</div>
+
+<p></p>
+
+<div class="form-group required">
+<div class="bs-example">
+    <div class="panel-group" id="accordion">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"> <a data-toggle="collapse" class="btn-block" data-parent="#accordion" onclick="fold(1);" href="#collapse1">1. Satz</a> </h4>
+            </div>
+            <div id="collapse1" class="panel-collapse collapse in">
+                <div class="panel-body">
+{% if text1 == "p" %}
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <span id="text1f" class="showtext">Die Fertigstellung der Wohnungsanlage 'Paulusstraße' ist nächsten Monat.</span>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="controls  field-natVigAnswer1">
+                                <label class="radio-inline" for="id_natVigAnswer1_1">
+                                    <input type="radio" id="id_natVigAnswer1_1" value="present" name="natVigAnswer1" onclick="collectText(this);" required>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+<hr>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <span id="text1p" class="showtext">Die Fertigstellung der Wohnungsanlage 'Paulusstraße' wird nächsten Monat sein.</span>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="controls  field-natVigAnswer1">
+                                <label class="radio-inline" for="id_natVigAnswer1_2">
+                                    <input type="radio" id="id_natVigAnswer1_2" value="future" name="natVigAnswer1" onclick="collectText(this);" required>
+                                </label>
+                            </div><!--- .controls -->
+                        </div>
+                    </div>
+{% else %}
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <span id="text1p" class="showtext">Die Fertigstellung der Wohnunganlage 'Paulusstraße' wird nächsten Monat sein.</span>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="controls  field-natVigAnswer1">
+                                <label class="radio-inline" for="id_natVigAnswer1_2">
+                                    <input type="radio" id="id_natVigAnswer1_2" value="future" name="natVigAnswer1" onclick="collectText(this);" required>
+                                </label>
+                            </div><!--- .controls -->
+                        </div>
+                    </div>
+<hr>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <span id="text1f" class="showtext">Die Fertigstellung der Wohnunganlage 'Paulusstraße' ist nächsten Monat.</span>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="controls  field-natVigAnswer1">
+                                <label class="radio-inline" for="id_natVigAnswer1_1">
+                                    <input type="radio" id="id_natVigAnswer1_1" value="present" name="natVigAnswer1" onclick="collectText(this);" required>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+{% endif %}
+                </div>
+            </div>
+        </div>
+    <!-- Panel 1 -->
+
+
+
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion"  onclick="fold(2);" class="btn-block" href="#collapse2">2. Satz</a>
+                </h4>
+            </div>
+            <div id="collapse2" class="panel-collapse collapse">
+                <div class="panel-body">
+
+{% if text2 == "p" %}
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text2p" class="showtext">Die Bauherren erwarten, dass bis zum Sommer 100 neue Mietparteien in die Anlage einziehen.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+            <label class="radio-inline" for="id_natVigAnswer2_1"><input type="radio" id="id_natVigAnswer2_1" value="present" name="natVigAnswer2" onclick="collectText(this);" required> </label>
+            </div>
+    </div>
+    </div>
+    <hr>
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text2f" class="showtext">Die Bauherren erwarten, dass bis zum Sommer 100 neue Mietparteien in die Anlage einziehen werden.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+<label class="radio-inline" for="id_natVigAnswer2_2"><input type="radio" id="id_natVigAnswer2_2" value="future" name="natVigAnswer2" onclick="collectText(this);" required> </label>
+            </div><!--- .controls -->
+        </div>
+    </div>
+{% else %}
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text2f" class="showtext">Die Bauherren erwarten, dass bis zum Sommer 100 neue Mietparteien in die Anlage einziehen werden.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+<label class="radio-inline" for="id_natVigAnswer2_2"><input type="radio" id="id_natVigAnswer2_2" value="future" name="natVigAnswer2" onclick="collectText(this);" required> </label>
+            </div><!--- .controls -->
+        </div>
+    </div>
+<hr>
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text2p" class="showtext">Die Bauherren erwarten, dass bis zum Sommer 100 neue Mietparteien in die Anlage einziehen.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+            <label class="radio-inline" for="id_natVigAnswer2_1"><input type="radio" id="id_natVigAnswer2_1" value="present" name="natVigAnswer2" onclick="collectText(this);" required> </label>
+            </div>
+    </div>
+    </div>
+{% endif %}
+                </div>
+            </div>
+        </div>
+    <!-- Panel 2 -->
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion"  onclick="fold(3);" class="btn-block" href="#collapse3">3. Satz</a>
+                </h4>
+            </div>
+            <div id="collapse3" class="panel-collapse collapse">
+                <div class="panel-body">
+{% if text3 == "p" %}
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text3p" class="showtext">Auch ziehen verschiedene Einzelhandelsunternehmen in das Erdgeschoss der Anlage ein.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+            <label class="radio-inline" for="id_natVigAnswer3_1"><input type="radio" id="id_natVigAnswer3_1" value="present" name="natVigAnswer3" onclick="collectText(this);" required> </label>
+            </div>
+    </div>
+    </div>
+    <hr>
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text3f" class="showtext">Auch werden verschiedene Einzelhandelsunternehmen in das Erdgeschoss der Anlage einziehen.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+<label class="radio-inline" for="id_natVigAnswer3_2"><input type="radio" id="id_natVigAnswer3_2" value="future" name="natVigAnswer3" onclick="collectText(this);" required> </label>
+            </div><!--- .controls -->
+        </div>
+    </div>
+{% else %}
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text3f" class="showtext">Auch werden verschiedene Einzelhandelsunternehmen in das Erdgeschoss der Anlage einziehen.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+<label class="radio-inline" for="id_natVigAnswer3_2"><input type="radio" id="id_natVigAnswer3_2" value="future" name="natVigAnswer3" onclick="collectText(this);" required> </label>
+            </div><!--- .controls -->
+        </div>
+    </div>
+<hr>
+    <div class="row">
+        <div class="col-sm-10">
+                <span id="text3p" class="showtext">Auch ziehen verschiedene Einzelhandelsunternehmen in das Erdgeschoss der Anlage ein.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+            <label class="radio-inline" for="id_natVigAnswer3_1"><input type="radio" id="id_natVigAnswer3_1" value="present" name="natVigAnswer3" onclick="collectText(this);" required> </label>
+            </div>
+        </div>
+    </div>
+{% endif %}
+                </div>
+            </div>
+        </div>
+    <!-- Panel 3 -->
+
+ <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" onclick="fold(4);" class="btn-block" href="#collapse4">4. Satz</a>
+                </h4>
+            </div>
+            <div id="collapse4" class="panel-collapse collapse">
+                <div class="panel-body">
+{% if text4 == "p" %}
+                        <div class="row">
+            <div class="col-sm-10">
+                <span id="text4p" class="showtext">Die kommerzielle Nutzung des Komplexes beginnt zeitgleich mit dem Bezug der Wohnungen.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+            <label class="radio-inline" for="id_natVigAnswer4_1"><input type="radio" id="id_natVigAnswer4_1" value="present" name="natVigAnswer4" onclick="collectText(this);" required> </label>
+            </div>
+    </div>
+    </div>
+
+    <hr>
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text4f" class="showtext">Die kommerzielle Nutzung des Komplexes wird zeitgleich mit dem Bezug der Wohnungen beginnen.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+<label class="radio-inline" for="id_natVigAnswer4_2"><input type="radio" id="id_natVigAnswer4_2" value="future" name="natVigAnswer4" onclick="collectText(this);" required> </label>
+            </div><!--- .controls -->
+        </div>
+    </div>
+{% else %}
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text4f" class="showtext">Die kommerzielle Nutzung des Komplexes wird zeitgleich mit dem Bezug der Wohnungen beginnen.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+<label class="radio-inline" for="id_natVigAnswer4_2"><input type="radio" id="id_natVigAnswer4_2" value="future" name="natVigAnswer4" onclick="collectText(this);" required> </label>
+            </div><!--- .controls -->
+        </div>
+    </div>
+<hr>
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text4p" class="showtext">Die kommerzielle Nutzung des Komplexes beginnt zeitgleich mit dem Bezug der Wohnungen.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+            <label class="radio-inline" for="id_natVigAnswer4_1"><input type="radio" id="id_natVigAnswer4_1" value="present" name="natVigAnswer4" onclick="collectText(this);" required> </label>
+            </div>
+    </div>
+    </div>
+{% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- Panel 4 -->
+ <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" onclick="fold(5);" class="btn-block" href="#collapse5">5. Satz</a>
+                </h4>
+            </div>
+            <div id="collapse5" class="panel-collapse collapse">
+                <div class="panel-body">
+{% if text5 == "p" %}
+                        <div class="row">
+            <div class="col-sm-10">
+                <span id="text5p" class="showtext">Der Pressesprecher der Stadt kündigte an, dass die Stadt weiterhin in die Verkehrsanbindung des Viertels investiert.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+            <label class="radio-inline" for="id_natVigAnswer5_1"><input type="radio" id="id_natVigAnswer5_1" value="present" name="natVigAnswer5" onclick="collectText(this);" required> </label>
+            </div>
+    </div>
+    </div>
+
+    <hr>
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text5f" class="showtext">Der Pressesprecher der Stadt kündigte an, dass die Stadt weiterhin in die Verkehrsanbindung des Viertels investieren wird.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+<label class="radio-inline" for="id_natVigAnswer5_2"><input type="radio" id="id_natVigAnswer5_2" value="future" name="natVigAnswer5" onclick="collectText(this);" required> </label>
+            </div><!--- .controls -->
+        </div>
+    </div>
+{% else %}
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text5f" class="showtext">Der Pressesprecher der Stadt kündigte an, dass die Stadt weiterhin in die Verkehrsanbindung des Viertels investieren wird.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+<label class="radio-inline" for="id_natVigAnswer5_2"><input type="radio" id="id_natVigAnswer5_2" value="future" name="natVigAnswer5" onclick="collectText(this);" required> </label>
+            </div><!--- .controls -->
+        </div>
+    </div>
+<hr>
+    <div class="row">
+            <div class="col-sm-10">
+                <span id="text5p" class="showtext">Der Pressesprecher der Stadt kündigte an, dass die Stadt weiterhin in die Verkehrsanbindung des Viertels investiert.</span>
+            </div>
+            <div class="col-sm-1">
+                        <div class="controls  field-natVigAnswer1">
+            <label class="radio-inline" for="id_natVigAnswer5_1"><input type="radio" id="id_natVigAnswer5_1" value="present" name="natVigAnswer5" onclick="collectText(this);" required> </label>
+            </div>
+    </div>
+    </div>
+{% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Panel 5 -->
+
+            <div class="alert alert-info">
+                <b><span id="endtext"></span></b>
+            </div>
+
+
+</div><!--- .form-group -->
+<p></p>
+    <button class="btn btn-primary btn-large nextbutton" style="display: none" id="id_nextbutton">Weiter</button>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static "questionnaire/jquery-ui.js" %}"></script>
+<script type="text/javascript">
+
+$(document).ready( function() {
+    setTimeout(function(){
+            document.getElementById("id_nextbutton").style.display = '';
+        },25000);
+    });
+
+
+function fold(button){
+    var bid = button
+    if($('#collapse'+bid).is(":hidden")){
+        var isShown = 0;
+        }
+    for (var i = 1; i < 6; i++){
+        $('#collapse'+i).hide();
+        }
+     if(isShown == 0){
+        $('#collapse'+bid).show();
+     }
+     else{
+        $('#collapse'+bid).hide();
+    }
+}
+
+ // loop over all radio buttons and collect corresponding text in array
+ function collectText(button){
+    var textArray = ["",""];
+     for (var i = 1; i < 6; i++){
+         if($("#id_natVigAnswer"+i+"_1").is(':checked')){
+            var tp = $("#text"+i+"p").text();
+            textArray.push(tp);
+         }
+         else if($("#id_natVigAnswer"+i+"_2").is(':checked')){
+            var tp = $("#text"+i+"f").text();
+            textArray.push(tp);
+         }
+         else{
+            textArray.push("");
+         }
+     }
+    var newText = textArray.join(" ");
+    $('#endtext').text(newText);
+    var bid = button.id.substr(15,1);
+   if(parseInt(bid) < 5){
+       $('#collapse'+bid).toggle('active inactive');
+       var bid = parseInt(bid) + 1;
+       $('#collapse'+bid).toggle('active inactive');
+   }
+ }
+</script>
+{% endblock %}
+
+{% block styles %}
+
+<style>
+.panel-heading a:after {
+    font-family:'Glyphicons Halflings';
+    content:"\e114";
+    float: right;
+    color: "\e080";
+    font-weight:bold;
+}
+ .panel-header{
+    font-weight:bold;
+    }
+ .panel-body{
+     font-size: 12pt;
+    }
+.panel-heading a.collapsed:after {
+    content:"\e080";
+}
+ .showtext{
+     float: right;
+     }
+.page-header {
+    background: url("{% static "iban/uni_bonn.svg" %}");
+    background-size: 170px 60px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+
+
+</style>
+{% endblock %}

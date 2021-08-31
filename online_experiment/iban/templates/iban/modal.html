@@ -1,0 +1,154 @@
+  <button type="button" class="btn btn-primary btn-large btn-primary"  onclick="modalOpen()" id="modalButton">Abschicken</button>
+  <!-- Modal -->
+  <div class="modal fade" id="SendChoices" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Ihre Eingaben:</h4>
+        </div>
+        <div class="modal-body">
+            <p><b>IBAN:</b> <span id="jsiban"></span></p>
+            <p><b>BIC:</b> <span id="jsbic"></span></p>
+            <p><b>Vorname:</b> <span id="jsvorname"></span> <b>Name:</b> <span id="jsname"></span></p>
+            <p><b>Straße:</b> <span id="jsstreet"></span></p>
+            <p><b>Stadt:</b> <span id="jscity"></span> <b>PLZ:</b> <span id="jszipcode"></span></p>
+        </div>
+        <div class="modal-footer">
+            <p>Sind Ihre Eingaben korrekt?</p>
+		<p><button class="btn btn-primary btn-large next-button" type="submit" value="Next">Ja, Eingaben abschicken.</button></p>
+		<p><button type="button" class="btn btn-primary btn-large " data-dismiss="modal">Nein, Eingaben korrigieren.</button></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="emptymodal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Hinweis:</h4>
+        </div>
+        <div class="modal-body">
+                <p>Für eine Banküberweisung durch die Universität Bonn <u><b>sind alle Eingaben unbedingt richtig auszufüllen</b></u>.</p>
+                <p><b><span id="errormsg">Sie haben ein oder mehrere Felder nicht ausgefüllt.</span></b></p>
+                <p>Bitte überprüfen Sie Ihre Eingaben.</p>
+            </span>
+        </div>
+        <div class="modal-footer">
+		<p><button type="button" class="btn btn-primary btn-large " data-dismiss="modal">Eingaben überprüfen</button></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+  <div class="modal fade" id="StartMsg" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header start">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Hinweise zur Bankverbindung</h4>
+        </div>
+        <div class="modal-body">
+            <p>Damit die Universität Bonn eine Banküberweisung an Sie in Auftrag geben kann, benötigen wir die <b>IBAN</b> und <b>BIC</b> Ihres Kontos, sowie Ihren <b>Namen</b> und <b>Adresse</b>.</p>
+            <p>Zu Ihrer Sicherheit werden Ihre Bankdaten verschlüsselt an uns übermittelt und nur für den Zweck der Auszahlung verwendet.</p>
+        </div>
+        <div class="modal-footer start">
+		<p><button type="button" class="btn btn-primary btn-large " data-dismiss="modal">Verstanden</button></p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+<input type="hidden"  name="ibanmsgseen" id="id_ibanmsgseen"/>
+
+
+
+{% block styles %}
+<style>
+.table-striped th, td {
+	text-align:center;
+}
+.modal-header {
+	font-weight:bold;
+}
+.modal-content {
+	background-color: #839ccc;
+	color: #fff;
+	text-align:center;
+}
+.modal-body{
+	background-color: #fff;
+	color: #000;
+}
+.modal-footer{
+	text-align:center;
+}
+#scroller{
+	overflow:auto;
+}
+</style>
+{% endblock %}
+
+
+{% block scripts %}
+
+
+<script>
+
+$(document).ready( function(){
+    var seen = {{msgseen}};
+    if(seen != 1){
+        $("#StartMsg").modal('toggle');
+    }
+        $( '#id_ibanmsgseen' ).val(1);
+});
+
+
+function modalOpen(){
+     // get values
+    var iban = $('#id_iban').val();
+    var bic = $('#id_bic').val();
+    var vorname = $('#id_bankvname').val();
+    var name = $('#id_bankname').val();
+    var street = $('#id_street').val();
+    var city = $('#id_city').val();
+    var zipcode = $('#id_zipcode').val();
+
+    if(iban && bic && vorname && name && street && city && zipcode){
+        if(IBAN.isValid(iban)){
+            // assign values
+            $('#jsiban').text(iban);
+            $('#jsbic').text(bic);
+            $('#jsvorname').text(vorname);
+            $('#jsname').text(name);
+            $('#jsstreet').text(street);
+            $('#jscity').text(city);
+            $('#jszipcode').text(zipcode);
+
+            $("div.modal-content").css({"background-color":"#839ccc"});
+            $("#SendChoices").modal('toggle');
+            }
+        else{
+            $("#emptymodal").modal('toggle');
+            $("div.modal-content").css({"background-color":"#cd5c5c"});
+            $("#errormsg").text("Es scheint einen Fehler in Ihrer IBAN zu geben.");
+            }
+        }
+        else{
+            $("#emptymodal").modal('toggle');
+            $("div.modal-content").css({"background-color":"#cd5c5c"});
+            $("#errormsg").text("Sie haben ein oder mehrere Felder nicht ausgefüllt.");
+        }
+}
+</script>
+{% endblock %}

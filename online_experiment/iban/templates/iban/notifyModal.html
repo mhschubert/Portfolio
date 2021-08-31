@@ -1,0 +1,37 @@
+  <!-- Modal -->
+  <div class="modal fade" id="StartMsg" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header start">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Hinweise zur Bankverbindung</h4>
+        </div>
+        <div class="modal-body">
+            <p>Damit die Universität Bonn einen Banktransfer an Sie in Auftrag geben kann, benötigen wir folgende Daten von Ihnen:</p>
+            <p><b>Name, Adresse, Bankverbindung (IBAN, BIC)</b>,</p>
+            <p>da diese im Zuge der Ausgabenabrechnung dem Finanzamt mitgeteilt werden müssen.</p>
+            <p> Zu Ihrer Sicherheit werden Ihre Bankdaten verschlüsselt übermittel, separat gespeichert und sind nur dem Experimentleiter zugänglich.</p>
+        </div>
+        <div class="modal-footer start">
+		<p><button type="button" class="btn btn-primary btn-large " data-dismiss="modal">Verstanden</button></p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+<input type="hidden"  name="ibanmsgseen" id="id_ibanmsgseen"/>
+
+{% block scripts %}
+    <script>
+        $(document).ready( function(){
+            var seen = {{msgseen}};
+            if(seen != 1){
+                $("#StartMsg").modal('toggle');
+            }
+                $( '#id_ibanmsgseen' ).val(1);
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+  <div class="panel-group">
+    <div class="panel panel-primary">
+        <div class="panel-heading"><h4>Ende des Experiments</h4></div>
+        <div class="panel-body">
+            <p><b>Vielen Dank für Ihre Teilnahme an unserem Online-Experiment.</b></p>
+            <p>Wenn Sie auf den <b>Weiter</b>-Button klicken erfahren Sie, ob Sie <b>ein Gewinner sind</b> und <b>für die Auszahlung ausgelost wurden.</b></p>
+            <p>Sollten Sie gewonnen haben, werden Ihnen die erzielten Auszahlungen angezeigt und Sie werden nach Ihrer E-Mail-Adresse und Ihrem Namen gefragt werden. Nach dem Abschicken Ihrer Eingaben, wird <b>der <a href="https://www.iame.uni-bonn.de/people/felix-albrecht" target="new">Studienleiter</a> automatisch via E-Mail informiert und nimmt schnellstmöglich mit Ihnen Kontakt auf</b>, um den Auszahlungsablauf sicherzustellen.</p>
+        </div>
+    </div>
+
+    <p>{% next_button %}</p>
+{% endblock %}
+
+    {% block styles %}
+    <style>
+.page-header {
+    background: url("{% static "iban/uni_bonn.svg" %}");
+    background-size: 170px 60px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+    </style>
+    {% endblock %}

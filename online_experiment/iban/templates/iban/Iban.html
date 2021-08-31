@@ -1,0 +1,131 @@
+{% extends "global/Base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+	Bitte geben Sie hier die für den Banktransfer notwendigen Daten ein.
+{% endblock %}
+
+{% block content %}
+
+<script src="{% static "iban/iban.js" %}"></script>
+
+<p>	
+
+<div class="form-group required">
+
+    <div class="row">
+            <div class="col-sm-6">
+                <label class="control-label" for="id_iban">IBAN:</label>
+                <div class="controls  field-iban">
+                    <input id="id_iban" maxlength="34" name="iban" type="text" style="width: 100%;" value="{{riban}}"/>
+                </div><!--- .controls -->
+{{ form.iban.errors }}
+            </div>
+            <div class="col-sm-4">
+                <label class="control-label" for="id_bic">BIC:</label>
+                <div class="controls  field-bic">
+                    <input id="id_bic" maxlength="11" name="bic" type="text"  value="{{rbic}}"/>
+                </div><!--- .controls -->
+{{ form.bic.errors }}
+            </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10">
+            <span class="help-block">(Sollten Sie sich unsicher über Ihre IBAN/BIC sein, können sie unter <a href="https://de.iban.com", target="new" title="Öffnet eine neue Seite.">iban.com</a> Ihre IBAN validieren und bekommen die korrekte BIC Ihres Kreditinstituts angezeigt.)</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label class="control-label" for="id_bankvname">Vorname:</label>
+            <div class="controls  field-iban">
+                <input id="id_bankvname" name="bankvname" type="text"  value="{{rbankvname}}"/>
+            </div><!--- .controls -->
+{{ form.bankvname.errors }}
+        </div>
+        <div class="col-sm-3">
+            <label class="control-label" for="id_bankname">Name:</label>
+            <div class="controls  field-bic">
+                <input id="id_bankname" name="bankname" type="text"  value="{{rbankname}}"/>
+            </div><!--- .controls -->
+{{ form.bankname.errors }}
+        </div>
+        <div class="col-sm-3">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label class="control-label" for="id_iban">Straße/Hausnr.:</label>
+            <div class="controls  field-iban">
+                <input id="id_street" name="street" type="text"  value="{{rstreet}}"/>
+            </div><!--- .controls -->
+{{ form.street.errors }}
+        </div>
+        <div class="col-sm-3">
+            <label class="control-label" for="id_city">Stadt:</label>
+            <div class="controls  field-bic">
+                <input id="id_city" name="city" type="text"  value="{{rcity}}"/>
+            </div><!--- .controls -->
+{{ form.city.errors }}
+        </div>
+        <div class="col-sm-3">
+            <label class="control-label" for="id_zipcode">PLZ:</label>
+            <div class="controls  field-bic">
+                <input id="id_zipcode" name="zipcode" type="text"  value="{{rzipcode}}"/>
+            </div><!--- .controls -->
+{{ form.zipcode.errors }}
+        </div>
+    </div>
+
+</div><!--- .form-group -->
+
+  {% include "iban/modal.html" %}
+  <p></p>
+  <p>Sollten Sie Fragen haben, schreiben Sie bitte eine Mail an den zuständigen Mitarbeiter <b>{{Constants.super}}</b>: <a href="mailto:{{Constants.supermail}}"><b>{{Constants.supermail}}</b></a></p>
+
+<input type="hidden"  name="user_agent" value="" id="id_user_agent"/>
+<input type="hidden"  name="window_height" value="" id="id_window_height"/>
+<input type="hidden"  name="window_width" value="" id="id_window_width"/>
+
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  $(document).ready(function() {
+       var x = "User-agent header sent: " + navigator.userAgent;
+        $( '#id_user_agent' ).val( x);
+        var winh = $(window).height();
+        var winw = $(window).width();
+        $( '#id_window_height' ).val(winh);
+        $( '#id_window_width' ).val(winw);
+      if({{msgseen}}!=1){
+          $('#id_iban').val("");
+          $('#id_bic').val("");
+          $('#id_bankvname').val("");
+          $('#id_bankname').val("");
+          $('#id_street').val("");
+          $('#id_city').val("");
+          $('#id_zipcode').val("");
+          }
+    });
+</script>
+
+{% block styles %}
+
+<style>
+.page-header {
+    background: url("{% static "iban/uni_bonn.svg" %}");
+    background-size: 170px 60px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+</style>
+
+
+{% endblock %}
+
+{% endblock %}
+
+

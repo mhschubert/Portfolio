@@ -1,0 +1,37 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+ Fragebogen	
+{% endblock %}
+
+{% block content %}
+            <div class="alert alert-info">
+                {% if role == "future" %}
+  <p>Auf den folgenden Seiten werden wir Ihnen einige Fragen stellen.</p>
+                {% elif role == "present" %}
+  <p>Auf den folgenden Seiten stellen wir Ihnen einige Fragen.</p>
+                {% endif %}
+        </div>
+
+<button class="btn btn-primary btn-large btn-primary" >Weiter</button>
+{% endblock %}
+
+{% block styles %}
+
+<style>
+ .alert-info{
+     text-align: center;
+     font-weight: bold;
+     }
+
+.page-header {
+    background: url("{% static "questionnaire/MPI_logo_gruen_transparent.png" %}");
+    background-size: 76px 76px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+
+</style>
+
+{% endblock %}

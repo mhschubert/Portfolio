@@ -1,0 +1,456 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}Studienteil:  Meide die Bombe - Teil 2{% endblock %}
+
+{% block content %}
+
+
+{% if role == "future" %}
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default" id="panel1">
+        <div class="panel-heading">
+             <h4 class="panel-title">
+        <a data-toggle="collapse" data-target="#collapseOne" class="btn-block" href="#collapseOne">
+            Ergebnis
+        </a>
+      </h4>
+
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+<p>Hier werden Sie erfahren, ob Sie im Spiel "Meide die Bombe" das Bombenfeld ausgewählt haben, oder nicht.</p>
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% elif role == "present" %}
+
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default" id="panel1">
+        <div class="panel-heading">
+             <h4 class="panel-title">
+        <a data-toggle="collapse" data-target="#collapseOne" 
+           href="#collapseOne">
+            Ergebnis
+        </a>
+      </h4>
+
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+<p>Hier erfahren Sie, ob Sie im Spiel "Meide die Bombe" das Bombenfeld ausgewählt haben, oder nicht.</p>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endif %}
+<p></p>
+
+
+<p>Anzahl der zuvor ausgewählten Pakete: <a id="ticked">0</a></p>
+
+<div class="reveal">
+    <p style="text-align:center;"><p id="id_result"></p><button type="button" id="revealer" onclick="openNav()">Zeige an, ob ich die Bombe ausgewählt habe.</button> 
+</p>
+</div>
+<span id="gridpos"><table id="table"></table></span>
+<button class="btn btn-primary btn-large nextbutton" id="id_nextbutton">Weiter</button>
+<p>(In seltenen Fällen kann es vorkommen, dass das Ergebnis nicht dargestellt werden kann. Die für die Ermittlung der Auszahlung erforderlichen Daten wurden bereits in Teil 1 dieses Studienteils erfasst. Sollten Sie technische Probleme haben, wenden Sie sich bitte an f.albrecht at uni-bonn.de .)</p>
+<input type="hidden" name="bombgamePayoff" id="id_bombgamePayoff">
+
+
+
+{% endblock %}
+
+{% block styles %}
+  <style type="text/css">
+ .panel-body{
+     font-size: 12pt;
+     }
+ .panel-title{
+     font-weight: bold;
+     }
+   .grid {
+        position:relative;
+        left: 0px;
+        right: 0px;
+        z-index: = 0;
+        margin:1em auto;
+        border-collapse:collapse
+        }
+    .grid td {
+        cursor:pointer;
+        width:30px; height:30px;
+        border:1px solid #ccc;
+        text-align:center;
+        font-family:sans-serif; font-size:13px
+    }
+    .grid td.clicked {
+        background-color:white;
+        font-weight:bold; color:red;
+    }
+    .detonate {
+        position: relative;
+
+        z-index: 1;
+        display: block;
+        margin: auto;
+        }
+    .winner {
+        position: relative;
+        display: block;
+        margin: auto;
+        z-index: 1;
+      }
+
+ .panel-heading a:after {
+    font-family:'Glyphicons Halflings';
+    content:"\e114";
+    float: right;
+    color: grey;
+}
+.panel-heading a.collapsed:after {
+    content:"\e080";
+}
+.reveal {
+    display: block;
+    margin: auto;
+    }
+.page-header {
+    background: url("{% static "iban/uni_bonn.svg" %}");
+    background-size: 170px 60px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+  </style>
+{% endblock %}
+
+
+
+
+
+
+
+{% block scripts %}
+
+    
+
+<script type="text/javascript">
+
+//Resizing Function in case of window size change
+var w = window.innerWidth;
+var h = window.innerHeight;
+var cellsize;
+var picturesize;
+if (w < 680) {
+    cellsize = 30;
+    picturesize = 30;
+}
+else{
+    cellsize = 40;
+    picturesize= 40;
+}
+function watch(){
+  w = window.innerWidth;
+  h = window.innerHeight;
+  if (w < 680) {
+    for(var k =1; k<=100;k++){
+        var widthar = document.getElementById('button'+k);
+        widthar.style.width='30px';
+        widthar.style.height='30px';
+        widthar.style.fontSize='8px';
+        widthar= document.getElementById('parcel'+k);
+        widthar.style.width='30px';
+        widthar.style.height='30px';
+        if(k!=bomb){
+	        widthar= document.getElementById('dollar'+k);
+	        widthar.style.width='30px';
+	        widthar.style.height='30px';
+   		}
+        widthar= document.getElementById('bomb');
+        widthar.style.width='30px';
+        widthar.style.height='30px';
+
+    }
+  }
+  else if(w>680){
+    for(var k =1; k<=100;k++){
+        var widthar= document.getElementById('button'+k);
+        widthar.style.width='40px';
+        widthar.style.height='40px';
+        widthar.style.fontSize='14px';
+        widthar= document.getElementById('parcel'+k);
+        widthar.style.width='40px';
+        widthar.style.height='40px';
+        if(k!=bomb){
+	        widthar= document.getElementById('dollar'+k);
+	        widthar.style.width='40px';
+	        widthar.style.height='40px';
+   		}
+        widthar= document.getElementById('bomb');
+        widthar.style.width='40px';
+        widthar.style.height='40px';
+    }
+  }
+}
+window.addEventListener("resize", watch);
+//Variables setting from previous selection
+//Set winningamount to 0
+document.getElementById("id_bombgamePayoff").value = 0;
+//for testing purposes
+//var entry = '1,5,6,7,8,9,10,50,100,35';
+var entry = "{{ bombgame }}";
+//for testing purposes
+//var selected = [1, 5, 6, 7, 8, 9, 10, 50, 100, 35];
+var selected = JSON.parse("[" + entry + "]");
+if(isInArray(0,selected)){
+	selected[0]=101;
+}
+var bomb = "{{ bomb }}";
+//For Test
+//bomb = 1;
+//transfer number of selected parcels
+ if(selected[0] === 101){
+    document.getElementById("ticked").innerHTML = 0;
+     }
+ else{
+    document.getElementById("ticked").innerHTML = selected.length;
+     }
+//set hidden payoff in case of win
+if(selected.includes(bomb)==false && selected.indexOf(101)<0){
+  document.getElementById("id_bombgamePayoff").value = selected.length*0.20;
+}
+//for explosion check
+var explosion = false;
+//variable which contains buttons-grid
+var grid = clickableGrid(10,10);
+
+//function in case include is not supported by browser
+function isInArray(value, array) {
+  return array.indexOf(value) > -1;
+}
+
+//Round-function for precision problem which would costs us a few million in euros
+function round(){
+      var rounded = Math.floor(selected.length*0.20*100);
+      rounded = rounded/100;
+      return rounded.toFixed(2);
+}
+
+  //function which is triggered by clicking the button to check if won
+function reveal(){
+  //Use of the function include - check if browser supports it
+  if ("includes" in Array.prototype){
+    for(var i=1;i<=100;i++){
+      if(selected.includes(i) && i!=bomb){
+          var pic = 'parcel'+i;
+          var pic2 = 'dollar'+i;
+          document.getElementById(pic).style.display = "none";
+          document.getElementById(pic2).style.display = '';
+      }
+        else if(selected.includes(i)!=true && i==bomb){
+          var pic = 'button'+i;
+          var pic2 = 'bomb';
+          document.getElementById(pic).style.display = "none";
+          document.getElementById(pic2).style.display = '';
+        }
+        else if(selected.includes(i) && i==bomb){
+          var pic = 'parcel'+i;
+          var pic2 = 'bomb';
+          document.getElementById(pic).style.display = "none";
+          document.getElementById(pic2).style.display = '';
+        }
+    }
+    document.getElementById("id_nextbutton").style.visibility="visible";
+    {% if role == "future" %}
+        if("{{overImg}}"=="winner" && selected.indexOf(101)<0){
+
+            document.getElementById("id_result").innerHTML='<b>Sie haben die Bombe nicht angeklickt.<br>Für den Studienteil "Meide die Bombe" werden Sie '+ round()+' Euro erhalten.</b>';
+        }
+        else if("{{overImg}}"=="boring"){
+    	    document.getElementById("id_result").innerHTML='<b>Sie haben nichts ausgewählt.</br>Für den Studienteil "Meide die Bombe" werden Sie 0.00 Euro erhalten.</b>';
+    	    }
+
+        else{
+    	    document.getElementById("id_result").innerHTML='<b>Sie haben die Bombe angeklickt.</br>Für den Studienteil "Meide die Bombe" werden Sie 0.00 Euro erhalten.</b>';
+    	   }
+
+     {% elif role == "present" %}
+        if("{{overImg}}"=="winner" && selected.indexOf(101)<0){
+
+            document.getElementById("id_result").innerHTML='<b>Sie haben die Bombe nicht angeklickt.<br>Für den Studienteil "Meide die Bombe" erhalten Sie '+ round()+' Euro.</b>';
+        }
+        else if("{{overImg}}"=="boring"){
+          document.getElementById("id_result").innerHTML='<b>Sie haben nichts ausgewählt.</br>Für den Studienteil "Meide die Bombe" erhalten Sie 0.00 Euro.</b>';
+          }
+
+        else{
+          document.getElementById("id_result").innerHTML='<b>Sie haben die Bombe angeklickt.</br>Für den Studienteil "Meide die Bombe" erhalten Sie 0.00 Euro.</b>';
+        }
+      {% endif %}
+
+	    document.getElementById("revealer").style.display="none";
+	    //document.getElementById("myNav").style.width = "100%";
+	      // new overlay element timeout
+	    //setTimeout(function(){
+	    //    document.getElementById("myNav").style.width = "0%";
+	    //    },3000);
+  }
+  //if browser does not support it
+  else{
+    for(var i=1;i<=100;i++){
+      if(isInArray(i,selected) && i!=bomb){
+          var pic = 'parcel'+i;
+          var pic2 = 'dollar'+i;
+          document.getElementById(pic).style.display = "none";
+          document.getElementById(pic2).style.display = '';
+      }
+      else if(isInArray(i,selected)!=true && i==bomb){
+          var pic = 'button'+i;
+          var pic2 = 'bomb';
+          document.getElementById(pic).style.display = "none";
+          document.getElementById(pic2).style.display = '';
+      }
+      else if(isInArray(i,selected) && i==bomb){
+          var pic = 'parcel'+i;
+          var pic2 = 'bomb';
+          document.getElementById(pic).style.display = "none";
+          document.getElementById(pic2).style.display = '';
+      }
+    }
+    document.getElementById("id_nextbutton").style.visibility="visible";
+    {% if role == "future" %}
+        if("{{overImg}}"=="winner" && selected.indexOf(101)<0){
+
+            document.getElementById("id_result").innerHTML='<b>Sie haben die Bombe nicht angeklickt.<br>Für den Studienteil "Meide die Bombe" werden Sie '+ round()+' Euro erhalten.</b>';
+        }
+        else if("{{overImg}}"=="boring"){
+          document.getElementById("id_result").innerHTML='<b>Sie haben nichts ausgewählt.</br>Für den Studienteil "Meide die Bombe" werden Sie 0.00 Euro erhalten.</b>';
+          }
+
+        else{
+          document.getElementById("id_result").innerHTML='<b>Sie haben die Bombe angeklickt.</br>Für den Studienteil "Meide die Bombe" werden Sie 0.00 Euro erhalten.</b>';
+         }
+
+     {% elif role == "present" %}
+        if("{{overImg}}"=="winner" && selected.indexOf(101)<0){
+
+            document.getElementById("id_result").innerHTML='<b>Sie haben die Bombe nicht angeklickt.<br>Für den Studienteil "Meide die Bombe" erhalten Sie '+ round()+' Euro.</b>';
+        }
+        else if("{{overImg}}"=="boring"){
+          document.getElementById("id_result").innerHTML='<b>Sie haben nichts ausgewählt.</br>Für den Studienteil "Meide die Bombe" erhalten Sie 0.00 Euro.</b>';
+          }
+
+        else{
+          document.getElementById("id_result").innerHTML='<b>Sie haben die Bombe angeklickt.</br>Für den Studienteil "Meide die Bombe" erhalten Sie 0.00 Euro.</b>';
+        }
+      {% endif %}
+    document.getElementById("revealer").style.display="none";
+      // new overlay element timeout
+    //document.getElementById("myNav").style.width = "100%";
+      // new overlay element timeout
+    //setTimeout(function(){
+    //    document.getElementById("myNav").style.width = "0%";
+    //    },3000);
+  }
+}
+ 
+ //include a onclick-event on revealer-button
+document.getElementById("revealer").onclick = function() {reveal()};
+//append button-grid to document
+//document.body.appendChild(grid);
+//append detonate/winner-pic to div gridpos
+
+
+//create the clickable button-grid
+function clickableGrid(rows, cols){
+    var i=0;
+    //var grid = document.createElement('table');
+    var grid = document.getElementById('table');
+    grid.className = 'grid';
+    //grid.id = 'table';
+    var dollar = '{% static "bouken/dollart.png" %}';
+    var parcel = '{% static "bouken/packaget.png" %}';
+    // using django to determine bomb image
+    {% if overImg == "winner" %}
+        var bombpic = '{% static "bouken/bombt.png" %}';
+        var dollar = '{% static "bouken/dollart.png" %}';
+        var parcel = '{% static "bouken/packaget.png" %}';
+    {% else %}
+        var bombpic = '{% static "bouken/tinyboom.jpg" %}';
+        var parcel = '{% static "bouken/packaget.png" %}';
+        var dollar = '{% static "bouken/packaget.png" %}';
+    {% endif %}
+    for (var r=0;r<rows;++r){
+        var tr = grid.appendChild(document.createElement('tr'));
+        for (var c=0;c<cols;++c){
+            i+=1;
+            var cell = tr.appendChild(document.createElement('td'));
+            //Use of the function include - check if browser supports it
+            if ("includes" in Array.prototype){
+              if(selected.includes(i) && i!=bomb){
+              //baue Parcels und Dollars in gewählte Felder ohne Bombe
+                cell.innerHTML = '<img src="'+ dollar+'" style="width:'+picturesize+'px;height:'+picturesize+'px; display:none;" id="dollar'+i+'" class="sideviewtoggle myPicture"><img src="'+parcel+'" style="width:'+picturesize+'px;height:'+picturesize+'px; display:"";" id="parcel'+i+'" class="sideviewtoggle myPicture"><button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="font-size:8px; width:'+cellsize+'px;height:'+cellsize+'px;display:none;">'+(i)+' </button>';            
+              }
+            else if(i == bomb && selected.includes(i)!=true ){
+            //Baue Button und Bombe in Feld, falls bomb==true und Feld nicht gewählt
+              if(window.innerWidth<680){
+                  cell.innerHTML = '<img src="'+bombpic+'" style="width:'+picturesize+'px;height:'+picturesize+'px; display:none;" id="bomb" class="sideviewtoggle myPicture"><button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="font-size:7px; width:'+cellsize+'px;height:'+cellsize+'px; display:"";">'+(i)+'</button>';
+                }
+              else{
+                  cell.innerHTML = '<img src="'+bombpic+'" style="width:'+picturesize+'px;height:'+picturesize+'px; display:none;" id="bomb" class="sideviewtoggle myPicture"><button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="width:'+cellsize+'px;height:'+cellsize+'px; display:"";">'+(i)+'</button>';
+                }
+             }
+             else if(i == bomb && selected.includes(i)==true){
+             //Baue Parcel und Bombe in Feld, falls bomb==true und Feld nicht gewählt
+                cell.innerHTML = '<img src="'+bombpic+'" style="width:'+picturesize+'px;height:'+picturesize+'px; display:none;" id="bomb" class="sideviewtoggle myPicture"><img src="'+parcel+'" style="width:'+picturesize+'px;height:'+picturesize+'px; display:;" id="parcel'+i+'" class="sideviewtoggle myPicture"><button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="font-size:8px; width:'+cellsize+'px;height:'+cellsize+'px;display:none;">'+(i)+' </button>'; 
+                explosion = true;
+            }
+              else{
+              //Sonst baue Button ein
+                if(window.innerWidth<680){
+                  cell.innerHTML = '<button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="font-size:7px;width:'+cellsize+'px;height:'+cellsize+'px; display:"";">'+(i)+'</button>';
+                }
+                else{
+                  cell.innerHTML = '<button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="width:'+cellsize+'px;height:'+cellsize+'px; display:"";">'+(i)+'</button>';
+                }
+              }
+           }
+           //if browser does not support it
+           else{
+            if(isInArray(i,selected) && i!= bomb){
+              cell.innerHTML = '<img src="http://i.imgur.com/qgkIKDc.jpg" style="width:'+picturesize+'px;height:'+picturesize+'px; display:none;" id="dollar'+i+'" class="sideviewtoggle myPicture"><img src="'+parcel+'" style="width:'+picturesize+'px;height:'+picturesize+'px; display:"";" id="parcel'+i+'" class="sideviewtoggle myPicture"><button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="font-size:8px; width:'+cellsize+'px;height:'+cellsize+'px;display:none;">'+(i)+' </button>'; 
+            }
+            else if(i == bomb && isInArray(i,selected) != true){
+              if(window.innerWidth<680){
+                  cell.innerHTML = '<img src="'+bombpic+'" style="width:'+picturesize+'px;height:'+picturesize+'px; display:none;" id="bomb" class="sideviewtoggle myPicture"><button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="font-size:7px; width:'+cellsize+'px;height:'+cellsize+'px; display:"";">'+(i)+'</button>';
+                }
+              else{
+                  cell.innerHTML = '<img src="'+bombpic+'" style="width:'+picturesize+'px;height:'+picturesize+'px; display:none;" id="bomb" class="sideviewtoggle myPicture"><button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="width:'+cellsize+'px;height:'+cellsize+'px; display:"";">'+(i)+'</button>';
+                } 
+             }
+            else if(i == bomb && isInArray(i,selected) == true){
+                cell.innerHTML = '<img src="'+bombpic+'" style="width:'+picturesize+'px;height:'+picturesize+'px; display:none;" id="bomb" class="sideviewtoggle myPicture"><img src="'+parcel+'" style="width:'+picturesize+'px;height:'+picturesize+'px; display:"";" id="parcel'+i+'" class="sideviewtoggle myPicture"><button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="font-size:8px; width:'+cellsize+'px;height:'+cellsize+'px;display:none;">'+(i)+' </button>'; 
+                explosion = true;
+            }
+            else{
+              //Sonst baue Button ein
+                if(window.innerWidth<680){
+                  cell.innerHTML = '<button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="font-size:7px;width:'+cellsize+'px;height:'+cellsize+'px; display:"";">'+(i)+'</button>';
+                }
+                else{
+                  cell.innerHTML = '<button type="button" id="button'+(i)+'" class="sideviewtoggle myButton" style="width:'+cellsize+'px;height:'+cellsize+'px; display:"";">'+(i)+'</button>';
+                }
+            }
+           }
+           }
+          }
+    return grid;
+}
+</script>
+{% endblock %}
