@@ -1,5 +1,7 @@
 # Travelling Salesman Solution via Biologically Inspired Algorithms
 
+### Uses: machine learning; Backends: None - implementation from scratch
+
 I like to travel and I like to play around with data and machine learning. So this is may way of combining both:
 Solving the problem of how to travel all capital cities by using **biologically inspired** machine learning - basically "solving" a TSP problem.
 
