@@ -1,5 +1,7 @@
 # Hyperparameter Analysis of Dynamic Time Warping & Partitional Clustering on Time-Series Data using R & HPC
 
+### Uses: Time-series clustering, dynamic time warping, unsupervised learning; Backeds: R, HPC computing, SLURM
+
 This analysis focuses on how the choice of certain hyperparameters for dynamic time warping (dtw) and the clustering algorithm affects the outcome.
 To test this, I simulate a datset using 5 known player types appearing in Publig-Goods Games (PGGs), which is a well-studied problem in behavioral research.
 
