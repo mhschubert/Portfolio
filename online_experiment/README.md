@@ -2,6 +2,7 @@
 
 ### Uses: Python, JavaScript, HTML, CSS; Backends: oTree, Heroku
 
+Data must first be generated for it to then be analysed. That was also part of my job during my position as a scientist. In the following, I have one example of the experiments I programmed to test hypotheses and generate data.
 
 The experiment focuses on *testing the "linguistic-savings hypothesis"* proposed in [Chen (2013)](https://www.aeaweb.org/articles?id=10.1257/aer.103.2.690).
 It does so by leveraging a grammtical pecularity of the German langugage, 
@@ -13,7 +14,7 @@ It is impelmented as an online experiment.<br>
 It was designed and conducted before Amazon MTurk really was a thing - consequently it needed a Heroku server (excluded) in the background to communicate with.
 Moreover, it is **optimized for mobile device use**.
 
-Origianally implemented in the beginning of 2017.
+Originally implemented in the beginning of 2017.
 
 **Requirements**:
 - JavaScript ES6 (2015)
