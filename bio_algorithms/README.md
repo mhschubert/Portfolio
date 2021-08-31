@@ -1,5 +1,5 @@
 # Training Biologically Inspired Algorithms - Ant Colony Optimization & Genetic Algorithm
-
+### Uses: machine learning, multiprocessing; Backends: None - Implementation from scratch
 This is just me paying around with biologically inspired algorithms to see how different factors influence the outcome.
 
 In code there are two algorithms implemented:
