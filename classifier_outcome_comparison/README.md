@@ -39,8 +39,8 @@ In the following figure, we see aggregation boxplots for the *age* prediction ta
 (calculated on basis of the weight matrix) in terms of Spearman's Rho.
 
 <p float="left">
-<img src="https://github.com/mhschubert/Portfolio/blob/main/classifier_outcome_comparison/figures/age_f1_scores_500-1.jpg" width="500" height="350"/> 
-<img src="https://github.com/mhschubert/Portfolio/blob/main/classifier_outcome_comparison/figures/age_spearman_ext_500-1.jpg" width="500" height="350"/>
+<img src="https://github.com/mhschubert/Portfolio/blob/main/classifier_outcome_comparison/figures/age_f1_scores_500-1.jpg" width="450"/> 
+<img src="https://github.com/mhschubert/Portfolio/blob/main/classifier_outcome_comparison/figures/age_spearman_ext_500-1.jpg" width="450"/>
 </p>
 
 In the left figure, we can see that the performance is comparable to what is reported in the literature of authorship analysis
@@ -64,3 +64,5 @@ Overall, we see that using trained models in one context and changing the contex
 may introduce unseen variation as most input-output relationships seem to be correlational in nature.
 As a consequence, the error rate of a otherwise well-performing model might rise during its use on unseen data.
 That brings negative normaive implications with it.
+
+The complete analysis may be found in [this working paper](https://github.com/mhschubert/Portfolio/blob/main/classifier_outcome_comparison/figures/classifier_outcome_comparison.pdf).
