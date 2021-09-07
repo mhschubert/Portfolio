@@ -1,0 +1,1 @@
+This is the working paper [Albrecht & Schubert (2021) The Effect of Grammatical Variation on Economic Behavior: Varying Future Time References within the German Language ]() (authors are in alphabetical order).
