@@ -51,3 +51,5 @@ I included a few screenshots below so you are able to see the structure and desi
 <p float="left">
 <img src="https://github.com/mhschubert/Portfolio/blob/main/online_experiment/screenshots/Paragraph.png" width="500" />
 </p>
+
+The experiment was used for the paper [Albrecht & Schubert (2021) The Effect of Grammatical Variation on Economic Behavior: Varying Future Time References within the German Language ](https://github.com/mhschubert/Portfolio/blob/main/online_experiment/pdf/Albrecht_Schubert_2021.pdf) (authors are in alphabetical order).
