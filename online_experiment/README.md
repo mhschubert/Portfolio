@@ -1,8 +1,8 @@
-# Behavioral Online Experiment based on oTree - Optimized for Mobile Device Use
+# Behavioral Online Experiment based on oTree (Between-Subject / AB-Testing) - Optimized for Mobile Device Use
 
 ### Uses: Python, JavaScript, HTML, CSS; Backends: oTree, Heroku
 
-Data must first be generated for it to then be analysed. That was also part of my job during my position as a scientist. In the following, I have one example of the experiments I programmed to test hypotheses and generate data.
+Data must first be generated for it to then be analysed. That was also part of my job during my position as a scientist. In the following, I have one example of the experiments I programmed in order to test hypotheses and generate data.
 
 The experiment focuses on *testing the "linguistic-savings hypothesis"* proposed in [Chen (2013)](https://www.aeaweb.org/articles?id=10.1257/aer.103.2.690).
 It does so by leveraging a grammtical pecularity of the German langugage, 
