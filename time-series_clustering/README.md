@@ -8,4 +8,4 @@ The goal is to find a good algorithmic configuration to partition that kind of d
 
 *Note*: The data needed to run the code is missing as I am not licensed to publicly share it. If you need it, please do not hestitate to contact me.
 
-The working paper for which I designed the code can be found here: [Engel, Hausladen, Schubert (2021): Charting the Type Space: The Case of Linear Public-Good Experiments](https://github.com/mhschubert/Portfolio/blob/main/time-series_clustering/pdf/Engel_Hausladen_Schubert_Charting.pdf) (Authors are in alphabetical order)
+The working paper for which I designed the code can be found here: [Engel, Hausladen, Schubert (2021): Charting the Type Space: The Case of Linear Public-Good Experiments](https://github.com/mhschubert/Portfolio/blob/main/time-series_clustering/pdf/Engel_Hausladen_Schubert_Charting.pdf) (authors are in alphabetical order)
