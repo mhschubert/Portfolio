@@ -1,8 +1,8 @@
-# Using Dynamic Time Warping to Cluster Time Series of Group Interactions
+# Using Dynamic Time Warping to Cluster Time Series of Group Interactions using Dynamic Time Warping in R
 
 In this project, I use time-series clustering with dynamic time warping on data of group interactions. 
-The data used is closely relate to that of experiments implementing the Public-Goods game (PGG) prevalent in behavioral research.
-However, as the goal is to asses the quality of the result, I use simulated data as it gives us a ground truth 
+The data used is closely related to that of experiments implementing the Public-Goods game (PGG) prevalent in behavioral research.
+However, as the goal is to asses the quality of the result, I use simulated data as it gives us a ground truth.
 
 The goal is to find a good algorithmic configuration to partition that kind of data in a meaningful way.
 
