@@ -33,3 +33,5 @@ From the overall analysis, we concluded that a gamma in the range of 0.0085 - 0.
 <p float="left">
 <img src="https://github.com/mhschubert/Portfolio/blob/main/time-series_clustering/figures/reevaluation_gamma_for_k-1.jpg" width="800" height="600"/>
 </p>
+
+The analysis was initially conducted for the working paper [Engel, Hausladen, Schubert (2021): Charting the Type Space: The Case of Linear Public-Good Experiments](https://github.com/mhschubert/Portfolio/blob/main/time-series_clustering/pdf/Engel_Hausladen_Schubert_Charting.pdf) (authors are in alphabetical order).
