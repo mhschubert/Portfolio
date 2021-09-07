@@ -62,7 +62,7 @@ def plot_globe_route(route:list, df:pd.DataFrame, globe_enum=-1, central_lat=20,
         print('plotted globe view {}'.format(globe_enum))
         return fig, ax
 
-def plot_globes(route:list, df:pd.DataFrame, num_steps=200, dpi=150, figdir='../figures', fancypath='../data/HYP_50M_SR_W.tif'):
+def plot_globes(route:list, df:pd.DataFrame, ident:str, num_steps=200, dpi=150, figdir='../figures', fancypath='../data/HYP_50M_SR_W.tif'):
 
     lat_viw_range = [20.0,20.0]
     long_view_angle = [-180.0, 180.0]
@@ -75,12 +75,12 @@ def plot_globes(route:list, df:pd.DataFrame, num_steps=200, dpi=150, figdir='../
         fig_size = fig.get_size_inches()
         bbox = matplotlib.transforms.Bbox([[0.0, 0.0], [fig_size[0], fig_size[1]]])
         fig.savefig(os.path.join(figdirt,'globe_gif_part_{}.png'.format(i))
-                    , dpi=dpi, facecolor=fig.get_facecolor(), bbox_inches=bbox)
+                    , dpi=dpi, facecolor=fig.get_facecolor(), bbox_inches=bbox, transparent=True)
         fig.clf()
         plt.close()
         gc.collect()
 
-    create_gif(figdirt, 'globe_gif_part', figdir, 'globe_travel.gif')
+    create_gif(figdirt, 'globe_gif_part', figdir, 'globe_travel{}.gif'.format(ident))
 
 def plot_map_lambert(route:list, df:pd.DataFrame, enum=-1, figdir='../figures', save=True, fancypath='../data/HYP_50M_SR_W.tif'):
 
@@ -133,7 +133,7 @@ def plot_map_lambert(route:list, df:pd.DataFrame, enum=-1, figdir='../figures', 
         print('plotted lambert view {}'.format(enum))
         return fig, ax
 
-def plot_lamberts(route:list, df:pd.DataFrame, dpi=80, figdir='../figures', fancypath='../data/HYP_50M_SR_W.tif'):
+def plot_lamberts(route:list, df:pd.DataFrame, ident:str, dpi=80, figdir='../figures', fancypath='../data/HYP_50M_SR_W.tif'):
     figdirt = os.path.join(figdir, 'gifparts/lamberts')
     os.makedirs(figdirt, exist_ok=True)
     for i in range(len(route)):
@@ -141,11 +141,11 @@ def plot_lamberts(route:list, df:pd.DataFrame, dpi=80, figdir='../figures', fanc
         fig_size = fig.get_size_inches()
         bbox = matplotlib.transforms.Bbox([[0.0, 0.0], [fig_size[0], fig_size[1]]])
         fig.savefig(os.path.join(figdirt, 'lamberts_{}.png'.format(i))
-                    , dpi=dpi, facecolor=fig.get_facecolor(), bbox_inches=bbox)
+                    , dpi=dpi, facecolor=fig.get_facecolor(), bbox_inches=bbox, transparent=True)
         fig.clf()
         plt.close()
         gc.collect()
-    create_gif(figdirt, 'lamberts', figdir, 'lambert_travel.gif')
+    create_gif(figdirt, 'lamberts', figdir, 'lambert_travel{}.gif'.format(ident))
 
 
 def create_gif(fig_dir:str, identifier:str, outdir, outname):

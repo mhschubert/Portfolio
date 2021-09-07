@@ -19,8 +19,8 @@ class Data(object):
         matrix = np.zeros(shape=(rank,rank))
         low_tri_ind = np.tril_indices_from(matrix, k=-1)
         for comb in zip(*low_tri_ind):
-            cit1 = self.df.iloc[[comb[0]]]
-            cit2 = self.df.iloc[[comb[1]]]
+            cit1 = self.df_clean.iloc[[comb[0]]]
+            cit2 = self.df_clean.iloc[[comb[1]]]
             coord1 = (float(cit1[longcol]), float(cit1[latcol]))
             coord2 = (float(cit2[longcol]), float(cit2[latcol]))
             matrix[comb[0], comb[1]] = converter.calc_distance((coord1), (coord2))

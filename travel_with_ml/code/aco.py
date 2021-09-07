@@ -254,7 +254,12 @@ class _Ant(object):
                 except Exception as e:
                     #some error management
                     print('colony {}'.format(self.aco.rule))
-                    print(np.sum(tmp))
+                    print(stop)
+                    if stop <=self.aco.q0:
+                        print(argmax_pick)
+                    else:
+                        print(weight_matrix)
+                        print(weight_sum)
                     print('tmp')
                     print(tmp)
                     print(self.graph.pheromone)
