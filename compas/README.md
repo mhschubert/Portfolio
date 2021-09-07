@@ -1,4 +1,4 @@
-# Code is Law - COMPAS Case Study Impact of design decisions on outcome
+# Code is Law - COMPAS Case Study Impact of Design Decisions on Outcome
 
 ### Uses: machine learning, statistical analysis; Backends: pyTorch, scikit-learn
 
